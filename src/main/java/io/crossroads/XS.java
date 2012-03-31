@@ -82,6 +82,22 @@ public class XS {
     protected Context () {
       ptr = xs.xs_init();
     }
+    
+    public int setMaxSockets(int optval) {
+        return setLongContopt(CrossroadsIO$.MODULE$.XS_MAX_SOCKETS(), optval);
+    }
+    
+    public int setIOThreads(int optval) {
+    	return setLongContopt(CrossroadsIO$.MODULE$.XS_IO_THREADS(), optval);
+    }
+    
+    private int setLongContopt(int option, long optval) {
+      NativeLong length = new NativeLong(Long.SIZE / 8);
+      Memory value = new Memory(Long.SIZE / 8);
+      value.setLong(0, optval);
+      int result = xs.xs_setctxopt(ptr, option, value, length);
+      return result;
+    }
   }
 
   public static class Socket {

@@ -160,7 +160,7 @@ trait CrossroadsIOLibrary extends Library {
   def xs_recv(socket: Pointer, buf: Pointer, len: NativeLong, flags: Int): Int
   def xs_sendmsg(socket: Pointer, msg: xs_msg_t, flags: Int): Int
   def xs_send(socket: Pointer, buf: Pointer, len: NativeLong, flags: Int): Int
-  def xs_setctxopt(socket: Pointer, option_name: Int, option_value: Pointer, option_len: NativeLong)
+  def xs_setctxopt(socket: Pointer, option_name: Int, option_value: Pointer, option_len: NativeLong): Int
   def xs_setsockopt(socket: Pointer, option_name: Int, option_value: Pointer, option_len: NativeLong): Int
   def xs_socket(context: Pointer, socket_type: Int): Pointer
   def xs_strerror(errnum: Int): String

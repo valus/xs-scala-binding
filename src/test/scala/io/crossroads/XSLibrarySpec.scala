@@ -33,6 +33,13 @@ class CrossroadsIOLibrarySpec extends WordSpec with MustMatchers with BeforeAndA
       xs = CrossroadsIO.loadLibrary
       endpoint = "inproc://xs-spec"
     }
+    "xs_setctxopt" in {
+    	val context = xs.xs_init
+    	val (offset, sizeInBytes, optionValue) = (0, 4, 1)
+    	val value = new Memory(sizeInBytes) { setInt(offset, optionValue) }
+    	val (length, lengthRef) = (new NativeLong(sizeInBytes), new LongByReference(sizeInBytes))
+    	xs.xs_setctxopt(context, XS_MAX_SOCKETS, value, length) must equal(0)
+    }
     "xs_bind" in {
       val context = xs.xs_init
       val socket = xs.xs_socket(context, XS_PUB)
