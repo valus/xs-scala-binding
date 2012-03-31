@@ -42,7 +42,7 @@ class XSSpec extends WordSpec with MustMatchers {
       pub.send(outgoingMessage.getBytes, 0)
       poller.poll must equal(1)
       poller.pollin(0) must equal(true)
-      val incomingMessage = sub.recv(0)
+      val incomingMessage = sub.recv(outgoingMessage.length,0)
       incomingMessage must equal(outgoingMessage.getBytes)
       sub.close
       pub.close

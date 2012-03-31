@@ -92,50 +92,34 @@ public class XS {
     }
 
     public int getType() {
-      /*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       return (int) getLongSockopt(CrossroadsIO$.MODULE$.XS_TYPE());
     }
 
     public long getLinger() {
-      /*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       return (int) getLongSockopt(CrossroadsIO$.MODULE$.XS_LINGER());
     }
 
     public long getReconnectIVL() {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       return (int) getLongSockopt(CrossroadsIO$.MODULE$.XS_RECONNECT_IVL());
     }
 
     public long getBacklog() {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       return (int) getLongSockopt(CrossroadsIO$.MODULE$.XS_BACKLOG());
     }
 
     public long getReconnectIVLMax() {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       return getLongSockopt(CrossroadsIO$.MODULE$.XS_RECONNECT_IVL_MAX());
     }
 
     public long getMaxMsgSize() {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       return getLongSockopt(CrossroadsIO$.MODULE$.XS_MAXMSGSIZE());
     }
 
     public long getSndHWM() {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       return getLongSockopt(CrossroadsIO$.MODULE$.XS_SNDHWM());
     }
 
     public long getRcvHWM() {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       return getLongSockopt(CrossroadsIO$.MODULE$.XS_RCVHWM());
     }
 
@@ -156,26 +140,18 @@ public class XS {
     }
 
     public void setReceiveTimeOut(long timeout) {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       setLongSockopt(CrossroadsIO$.MODULE$.XS_RCVTIMEO(), timeout);
     }
 
     public long getReceiveTimeOut() {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       return getLongSockopt(CrossroadsIO$.MODULE$.XS_RCVTIMEO());
     }
 
     public void setSendTimeOut(long timeout) {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       setLongSockopt(CrossroadsIO$.MODULE$.XS_SNDTIMEO(), timeout);
     }
 
     public long getSendTimeOut() {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       return getLongSockopt(CrossroadsIO$.MODULE$.XS_SNDTIMEO());
     }
 
@@ -192,56 +168,38 @@ public class XS {
     }
 
     public long getFD() {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       return getLongSockopt(CrossroadsIO$.MODULE$.XS_FD());
     }
 
     public long getEvents() {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       return getLongSockopt(CrossroadsIO$.MODULE$.XS_EVENTS());
     }
 
     public void setLinger(long linger) {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       setLongSockopt(CrossroadsIO$.MODULE$.XS_LINGER(), linger);
     }
 
     public void setReconnectIVL(long reconnectIVL) {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       setLongSockopt(CrossroadsIO$.MODULE$.XS_RECONNECT_IVL(), reconnectIVL);
     }
 
     public void setBacklog(long backlog) {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       setLongSockopt(CrossroadsIO$.MODULE$.XS_BACKLOG(), backlog);
     }
 
     public void setReconnectIVLMax(long reconnectIVLMax) {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       setLongSockopt(CrossroadsIO$.MODULE$.XS_RECONNECT_IVL_MAX(), reconnectIVLMax);
     }
 
     public void setMaxMsgSize(long maxMsgSize) {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       setLongSockopt(CrossroadsIO$.MODULE$.XS_MAXMSGSIZE(), maxMsgSize);
     }
 
     public void setSndHWM(long sndHWM) {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       setLongSockopt(CrossroadsIO$.MODULE$.XS_SNDHWM(), sndHWM);
     }
 
     public void setRcvHWM(long rcvHWM) {
-    	/*if (getFullVersion() < makeVersion(2, 1, 0))
-        return -1;*/
       setLongSockopt(CrossroadsIO$.MODULE$.XS_RCVHWM(), rcvHWM);
     }
 
@@ -286,8 +244,56 @@ public class XS {
     }
 
     public boolean send(byte[] msg, int flags) {
+        xs_msg_t message = newXSMessage(msg);
+        Pointer data = xs.xs_msg_data(message);
+        NativeLong length = new NativeLong(msg.length);
+        if (xs.xs_send(ptr, data, length, flags) == -1) {
+          if (xs.xs_errno() == CrossroadsIO$.MODULE$.EAGAIN()) {
+            if (xs.xs_msg_close(message) != 0) {
+              raiseXSException();
+            } else {
+              return false;
+            }
+          } else {
+            xs.xs_msg_close(message);
+            raiseXSException();
+            return false;
+          }
+        }
+        if (xs.xs_msg_close(message) != 0) {
+          raiseXSException();
+        }
+        return true;
+      }
+
+      public byte[] recv(int length, int flags) {
+        xs_msg_t message = newXSMessage(length);
+        Pointer data = xs.xs_msg_data(message);
+        NativeLong len = new NativeLong(length);
+        
+        if (xs.xs_recv(ptr, data, len, flags) == -1) {
+          if (xs.xs_errno() == CrossroadsIO$.MODULE$.EAGAIN()) {
+            if (xs.xs_msg_close(message) != 0) {
+              raiseXSException();
+            } else {
+              return null;
+            }
+          } else {
+            xs.xs_msg_close(message);
+            raiseXSException();
+          }
+        }
+        
+        byte[] dataByteArray = data.getByteArray(0, length);
+        if (xs.xs_msg_close(message) != 0) {
+          raiseXSException();
+        }
+        return dataByteArray;
+      }
+      
+    public boolean sendmsg(byte[] msg, int flags) {
       xs_msg_t message = newXSMessage(msg);
-      if (xs.xs_sendmsg(ptr, message, flags) != 0) {
+      if (xs.xs_sendmsg(ptr, message, flags) == -1) {
         if (xs.xs_errno() == CrossroadsIO$.MODULE$.EAGAIN()) {
           if (xs.xs_msg_close(message) != 0) {
             raiseXSException();
@@ -306,7 +312,7 @@ public class XS {
       return true;
     }
 
-    public byte[] recv(int flags) {
+    public byte[] recvmsg(int flags) {
       xs_msg_t message = newXSMessage();
       
       if (xs.xs_recvmsg(ptr, message, flags) == -1) {
@@ -395,6 +401,14 @@ public class XS {
       return message;
     }
 
+    private xs_msg_t newXSMessage(int length) {
+        xs_msg_t message = new xs_msg_t();
+        if (xs.xs_msg_init_size(message, new NativeLong(length)) != 0) {
+          raiseXSException();
+        }
+        return message;
+      }
+    
     private void raiseXSException() {
       int errno = xs.xs_errno();
       String reason = xs.xs_strerror(errno);
