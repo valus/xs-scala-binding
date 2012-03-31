@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.zeromq;
+package io.crossroads;
 
 import com.sun.jna.*;
-import com.sun.jna.ptr.*;
 
-public class zmq_msg_t extends Structure {
-  public Pointer content;
-  public byte flags;
-  public byte vsm_size;
-  public byte[] vsm_data = new byte[ZMQ_MAX_VSM_SIZE];
-  private static final int ZMQ_MAX_VSM_SIZE = org.zeromq.ZeroMQ$.MODULE$.ZMQ_MAX_VSM_SIZE();
+public class xs_pollitem_t extends Structure {
+  public Pointer socket;
+  public int fd;
+  public short events;
+  public short revents;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,29 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.zeromq
+package io.crossroads
 
 import org.scalatest.WordSpec
 import org.scalatest.matchers.MustMatchers
-import org.zeromq.ZMQ._
+import io.crossroads.XS._
 
-class ZMQSpec extends WordSpec with MustMatchers {
-  "ZMQ" must {
+
+class XSSpec extends WordSpec with MustMatchers {
+  "XS" must {
     "support Socket#getType" in {
-      val context = ZMQ.context(1)
-      val sub = context.socket(ZMQ.SUB)
-      sub.getType must equal(ZMQ.SUB)
+      val context = XS.context
+      val sub = context.socket(XS.PAIR)
+      sub.getType must equal(XS.PAIR)
       sub.close 
     }
     "support pub-sub connection pattern" in {
-      val context = ZMQ.context(1)
+      val context = XS.context
       val (pub, sub, poller) = (
-        context.socket(ZMQ.PUB), 
-        context.socket(ZMQ.SUB), 
+        context.socket(XS.PUB), 
+        context.socket(XS.SUB), 
         context.poller
       )
-      pub.bind("inproc://zmq-spec")
-      sub.connect("inproc://zmq-spec")
+      pub.bind("inproc://xs-spec")
+      sub.connect("inproc://xs-spec")
       sub.subscribe(Array.empty)
       poller.register(sub)
       pub.send(outgoingMessage.getBytes, 0)
@@ -47,9 +48,9 @@ class ZMQSpec extends WordSpec with MustMatchers {
       pub.close
     }
     "support polling of multiple sockets" in {
-      val context = ZMQ.context(1)
-      val (pub, poller) = (context.socket(ZMQ.PUB), context.poller)
-      pub.bind("inproc://zmq-spec")
+      val context = XS.context
+      val (pub, poller) = (context.socket(XS.PUB), context.poller)
+      pub.bind("inproc://xs-spec")
       val (sub_x, sub_y) = (connectSubscriber(context), connectSubscriber(context))
       poller.register(sub_x)
       poller.register(sub_y)
@@ -62,15 +63,15 @@ class ZMQSpec extends WordSpec with MustMatchers {
       pub.close
     }
     "support sending of zero-length messages" in {
-      val context = ZMQ.context(1)
-      val pub = context.socket(ZMQ.PUB)
+      val context = XS.context
+      val pub = context.socket(XS.PUB)
       pub.send("".getBytes, 0)
       pub.close
     }
   }
   def connectSubscriber(context: Context) = {
-    val socket = context.socket(ZMQ.SUB) 
-    socket.connect("inproc://zmq-spec")
+    val socket = context.socket(XS.SUB) 
+    socket.connect("inproc://xs-spec")
     socket.subscribe(Array.empty)
     socket
   }
