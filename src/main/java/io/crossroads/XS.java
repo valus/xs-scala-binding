@@ -259,11 +259,11 @@ public class XS {
       xs.xs_connect(ptr, addr);
     }
 
-    public boolean send(byte[] msg, int flags) {
+    public boolean send(byte[] msg, int length, int flags) {
         xs_msg_t message = newXSMessage(msg);
         Pointer data = xs.xs_msg_data(message);
-        NativeLong length = new NativeLong(msg.length);
-        if (xs.xs_send(ptr, data, length, flags) == -1) {
+        NativeLong len = new NativeLong(length);
+        if (xs.xs_send(ptr, data, len, flags) == -1) {
           if (xs.xs_errno() == CrossroadsIO$.MODULE$.EAGAIN()) {
             if (xs.xs_msg_close(message) != 0) {
               raiseXSException();
