@@ -85,6 +85,27 @@ class XSSpec extends WordSpec with MustMatchers {
 		  push.close
 		  pull.close
 	  }
+	  "support Exclusive pair connection pattern" in {
+		  val context = XS.context
+		  val (peer1, peer2) = (
+			context.socket(XS.PAIR),
+			context.socket(XS.PAIR)
+		  )
+		  
+		  peer1.bind("inproc://xs-pair")
+		  peer2.connect("inproc://xs-pair")
+		  
+		  peer2.sendmsg(outgoingMessage.getBytes, 0)
+		  var incomingMessage = peer1.recvmsg(0)
+		  incomingMessage must equal(outgoingMessage.getBytes)
+		  
+		  peer1.sendmsg(responseMessage.getBytes, 0)
+		  incomingMessage = peer2.recvmsg(0)
+		  
+		  incomingMessage must equal(responseMessage.getBytes)
+		  peer2.close
+		  peer1.close
+	  }
 	  "support polling of multiple sockets" in {
 		  val context = XS.context
 		  val (pub, poller) = (context.socket(XS.PUB), context.poller)
