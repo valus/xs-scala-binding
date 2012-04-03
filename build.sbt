@@ -12,6 +12,38 @@ libraryDependencies ++= Seq(
 
 scalacOptions := Seq("-deprecation", "-unchecked")
 
-publishTo := Some(Resolver.file("GitHub Pages", file("../xs-scala-binding-pages/maven/")))
+publishTo <<= version { v: String =>
+  val nexus = "https://oss.sonatype.org/"
+  if (v.trim.endsWith("SNAPSHOT"))
+    Some("snapshots" at nexus + "content/repositories/snapshots")
+  else
+    Some("releases" at nexus + "service/local/staging/deploy/maven2")
+}
 
-publishArtifact in (Compile, packageDoc) := false 
+publishMavenStyle := true
+
+publishArtifact in Test := false
+
+pomIncludeRepository := { x => false }
+
+pomExtra := (
+  <url>https://github.com/valus/xs-scala-binding</url>
+  <licenses>
+    <license>
+      <name>Apache License</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <url>https://git@github.com/valus/xs-scala-binding.git</url>
+    <connection>scm:https://git@github.com/valus/xs-scala-binding.git</connection>
+  </scm>
+  <developers>
+    <developer>
+      <id>valus</id>
+      <name>Marcin Stelmach</name>
+      <url>www.stelmach.biz</url>
+    </developer>
+  </developers>
+)

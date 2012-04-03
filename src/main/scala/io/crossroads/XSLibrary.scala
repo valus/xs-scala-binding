@@ -111,17 +111,7 @@ object CrossroadsIO {
   val XS_POLLOUT: Short = 2
   val XS_POLLERR: Short = 4 
 
-  
-  
-  /** Built-in devices 
-  val XS_STREAMER = 1
-  val XS_FORWARDER = 2
-  val XS_QUEUE = 3
-  */
-  
-  
-  
-  
+    
   /** ZMQ message definition */
   val XS_MAX_VSM_SIZE = 30
   val XS_DELIMITER = 31
