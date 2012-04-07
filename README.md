@@ -38,3 +38,31 @@ For maven projects add below code to the `pom.xml` file:
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</repository>
 	</repositories>
+	
+
+Example of usage
+-----------------
+
+PUB-SUB pattern
+
+Publisher:
+
+	val context = XS.context
+	val pub = context.socket(XS.PUB)
+	pub.bind("tcp://127.0.0.1:3001")
+		
+	var pubMsg = "test publish msg"
+	while(true) {
+		pub.sendmsg(pubMsg.getBytes, 0)
+	}
+
+Subscriber:
+
+	val context = XS.context
+	val sub = context.socket(XS.SUB)
+	sub.connect("tcp://127.0.0.1:3001")
+	sub.subscribe(Array.empty)
+	while(true) {
+		val recvMsg = sub.recvmsg(0)
+		System.out.println("Sub recv=" + new String(recvMsg))
+	}
