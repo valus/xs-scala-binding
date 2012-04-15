@@ -352,6 +352,19 @@ public class XS {
       return dataByteArray;
     }
 
+    public boolean isMore(byte[] msg) {
+    	xs_msg_t message = newXSMessage(msg);
+    	Memory value = new Memory(Long.SIZE / 8);
+        LongByReference length = new LongByReference(Long.SIZE / 8);
+        int result = xs.xs_getmsgopt(message, CrossroadsIO$.MODULE$.XS_MORE(), value, length);
+        if(result == 0) {
+        	if(value.getLong(0) == 1) 
+        		return true;
+  		} else {
+        	raiseXSException();
+  		}
+        return false;
+    }
     protected Socket(Context context, int type) {
       ptr = xs.xs_socket(context.ptr, type);
     }
