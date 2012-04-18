@@ -21,7 +21,10 @@ package io.crossroads;
 import com.sun.jna.*;
 import com.sun.jna.ptr.*;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
+
 import io.crossroads.CrossroadsIOLibrary;
 
 public class XS {
@@ -76,7 +79,7 @@ public class XS {
 
   public static class Context {
     protected Pointer ptr;
-
+    
     public void term () {
     }
 
@@ -115,7 +118,8 @@ public class XS {
 
   public static class Socket {
     protected Pointer ptr;
-
+    protected MessageDataBuffer messageDataBuffer = new MessageDataBuffer();
+    
     public void close() {
       xs.xs_close(ptr);
     }
@@ -428,8 +432,10 @@ public class XS {
       } else {
         Memory mem = new Memory(msg.length);
         mem.write(0, msg, 0, msg.length);
-        if (xs.xs_msg_init_data(message, mem, new NativeLong(msg.length), null, null) != 0) {
-          raiseXSException();
+        if (xs.xs_msg_init_data(message, mem, new NativeLong(msg.length), messageDataBuffer, mem) == 0) {
+        	messageDataBuffer.add(mem);
+        } else {
+        	raiseXSException();
         }
       }
       return message;
@@ -456,6 +462,18 @@ public class XS {
       String reason = xs.xs_strerror(errno);
       throw new XSException(reason, errno);
     }
+    
+    private class MessageDataBuffer implements xs_free_fn {
+        private Set<Pointer> buffer = new HashSet<Pointer>();
+
+        public synchronized void add(Pointer data) {
+          buffer.add(data);
+        }
+
+        public synchronized void invoke(Pointer data, Pointer memory) {
+          buffer.remove(memory);
+        }
+      }
   }
 
   public static class Poller {

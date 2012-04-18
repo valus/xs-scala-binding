@@ -20,5 +20,7 @@ package io.crossroads;
 
 import com.sun.jna.*;
 
-public class xs_free_fn extends PointerType {
+public interface xs_free_fn extends Callback {
+	
+	public void invoke(Pointer data, Pointer memory);
 }
