@@ -1,49 +1,30 @@
-organization := "io.crossroads"
+import Dependencies._
 
-name := "xs-scala-binding"
+organization          := "io.crossroads"
 
-version := "1.0.0-SNAPSHOT"
+version               := "1.0.0-SNAPSHOT"
 
-libraryDependencies ++= Seq(
-  "net.java.dev.jna" % "jna" % "3.4.0",
-  "com.github.jnr" % "jnr-constants" % "0.8.2",
-  "org.scalatest" %% "scalatest" % "1.6.1" % "test"
-)
+homepage              := Some(url("https://github.com/valus/xs-scala-binding"))
 
-scalacOptions := Seq("-deprecation", "-unchecked")
+licenses              += ("GNU LESSER GENERAL PUBLIC LICENSE Version 3", url("http://www.gnu.org/copyleft/lesser.html"))
 
-publishTo <<= version { v: String =>
-  val nexus = "https://oss.sonatype.org/"
-  if (v.trim.endsWith("SNAPSHOT"))
-    Some("snapshots" at nexus + "content/repositories/snapshots")
-  else
-    Some("releases" at nexus + "service/local/staging/deploy/maven2")
-}
+startYear             := Some(2012)
 
-publishMavenStyle := true
+organizationName      := "xs-scala-binding"
 
-publishArtifact in Test := false
+crossScalaVersions    := Seq("2.9.2", "2.9.1-1", "2.9.1")
 
-pomIncludeRepository := { x => false }
+// Settings for Sonatype compliance
+pomIncludeRepository  := { _ => false }
 
-pomExtra := (
-  <url>https://github.com/valus/xs-scala-binding</url>
-  <licenses>
-    <license>
-      <name>Apache License</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-  <scm>
-    <url>https://git@github.com/valus/xs-scala-binding.git</url>
-    <connection>scm:https://git@github.com/valus/xs-scala-binding.git</connection>
-  </scm>
-  <developers>
-    <developer>
-      <id>valus</id>
-      <name>Marcin Stelmach</name>
-      <url>www.stelmach.biz</url>
-    </developer>
-  </developers>
-)
+publishTo 			  <<= version { v: String =>
+  									val nexus = "https://oss.sonatype.org/"
+  									if (v.trim.endsWith("SNAPSHOT"))
+    									Some("snapshots" at nexus + "content/repositories/snapshots")
+  									else
+    									Some("releases" at nexus + "service/local/staging/deploy/maven2")
+					  }
+
+pomExtra              ~= (_ ++ {ScmInfo.toXml})
+
+pomExtra              ~= (_ ++ {Developers.toXml})
