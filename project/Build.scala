@@ -35,7 +35,6 @@ object BuildDef extends Build {
 
   // Demos Project
   // ------------
-  lazy val demos = Project(id = "xs-scala-binding-demos", base = file("demos"))
-    .settings(description := "Examples for Scala binding", 
-    		libraryDependencies ++= Seq(slf4j_api, logback, slf4j_log4j12))
+  lazy val demos = Project(id = "xs-scala-binding-demos", base = file("demos")) dependsOn(core)
+    .settings(description := "Examples for Scala binding")
 }
