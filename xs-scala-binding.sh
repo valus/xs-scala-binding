@@ -12,5 +12,4 @@ DEFAULT_OPTS=""
 
 cd `dirname $0`
 
-# Call with INTERNAL_OPTS followed by LIFTSH_OPTS (or DEFAULT_OPTS). java always takes the last option when duplicate.
 exec java ${INTERNAL_OPTS} -jar project/sbt-launch.jar "$@"
