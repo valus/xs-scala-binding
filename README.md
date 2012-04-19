@@ -12,9 +12,9 @@ The Scala binding is a thin wrapper of the Crossroads I/O API.
 
 For SBT projects add below code to the `project/build.sbt`, for plugin library dependencies with the following lines:
 
-    resolvers += "Sonatype Repository (snaphots)" at "https://oss.sonatype.org/content/repositories/snapshots"
+    resolvers += "Sonatype Repository " at "https://oss.sonatype.org/content/repositories/releases/"
   
-    libraryDependencies += "io.crossroads" %% "xs-scala-binding" % "1.0.0-SNAPSHOT"
+    libraryDependencies += "io.crossroads" %% "xs-scala-binding" % "1.0.0"
 
 
 ### Maven
@@ -25,14 +25,14 @@ For maven projects add below code to the `pom.xml` file:
 		<dependency>
 	   		<groupId>io.crossroads</groupId>
 			<artifactId>xs-scala-binding_2.9.1</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 
 	<repositories>
 		<repository>
 			<id>sonatype</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<url>https://oss.sonatype.org/content/repositories/releases/</url>
 		</repository>
 	</repositories>
 	
