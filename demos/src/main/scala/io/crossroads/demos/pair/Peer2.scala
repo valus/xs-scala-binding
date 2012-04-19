@@ -16,27 +16,28 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package io.crossroads.demos.pub_sub
+package io.crossroads.demos.pair
 
 import io.crossroads.XS
+import io.crossroads.XS.Socket
 
-object Subscriber {
+object Peer2 {
+
+	val endpoint = "tcp://127.0.0.1:3000";
 	
-	val endpoint = "tcp://127.0.0.1:5533"
-		
 	def main(args: Array[String]): Unit = {
-      val context = XS.context
-	  val (sub, poller) = (
-	  		context.socket(XS.SUB),
-	  		context.poller
-	  )
-	  
-	  sub.connect(endpoint)
-	  sub.subscribe(Array.empty)
-	  poller.register(sub)
-		  
-	  while(true) {
-	    System.out.println("Recv msg: " + new String(sub.recvmsg(0)))
-	  }
-    }
+		var peer: Socket = null;
+		try {
+			val context = XS.context
+			peer = context.socket(XS.PAIR)
+			peer.connect(endpoint)
+			
+			while(true) {
+				val receiveMsg = peer.recvmsg(0)
+				System.out.println("Peer2 receiving msg: " + new String(receiveMsg))
+			}
+		} finally {
+			peer.close
+		}
+	}
 }
