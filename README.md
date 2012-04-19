@@ -39,30 +39,119 @@ For maven projects add below code to the `pom.xml` file:
 
 ## Example of usage
 
+More examples you can find in `demos` subproject.
+
 ### PUB-SUB pattern
 
-#### Publisher:
+#### Scala:
+
+##### Publisher:
+
 ```scala
-val context = XS.context
-val pub = context.socket(XS.PUB)
-pub.bind("tcp://127.0.0.1:3001")
+import io.crossroads.XS
+
+object Publisher {
+
+	val endpoint = "tcp://127.0.0.1:5533"
 		
-var pubMsg = "test publish msg"
-while(true) {
-	pub.sendmsg(pubMsg.getBytes, 0)
+	def main(args: Array[String]): Unit = {
+      val context = XS.context
+	  val pub = context.socket(XS.PUB)
+	  pub.bind(endpoint)
+	  
+	  val msg = "hello"
+	  
+	  while(true) {
+	  	System.out.println("Send msg: " + msg);
+	  	pub.sendmsg(msg.getBytes, 0)
+	  }
+    } 
 }
 ```
-#### Subscriber:
+
+##### Subscriber:
 ```scala
-val context = XS.context
-val sub = context.socket(XS.SUB)
-sub.connect("tcp://127.0.0.1:3001")
-sub.subscribe(Array.empty)
-while(true) {
-	val recvMsg = sub.recvmsg(0)
-	System.out.println("Sub recv=" + new String(recvMsg))
+import io.crossroads.XS
+
+object Subscriber {
+	
+	val endpoint = "tcp://127.0.0.1:5533"
+		
+	def main(args: Array[String]): Unit = {
+      val context = XS.context
+	  val (sub, poller) = (
+	  		context.socket(XS.SUB),
+	  		context.poller
+	  )
+	  
+	  sub.connect(endpoint)
+	  sub.subscribe(Array.empty)
+	  poller.register(sub)
+		  
+	  while(true) {
+	    System.out.println("Recv msg: " + new String(sub.recvmsg(0)))
+	  }
+    }
 }
 ```	
+
+#### Java:
+
+##### Publisher:
+
+```java
+import io.crossroads.XS;
+import io.crossroads.XS.Context;
+import io.crossroads.XS.Socket;
+
+public class Publisher {
+
+	private static final String ENDPOINT = "tcp://127.0.0.1:5533";
+		
+	public static void main(String[] args) {
+		
+		final Context context = XS.context();
+		final Socket pub = context.socket(XS.PUB);
+		pub.bind(ENDPOINT);
+	  
+		final String msg = "hello";
+	  
+		while(true) {
+			System.out.println("Send msg: " + msg);
+			pub.sendmsg(msg.getBytes(), 0);
+		}
+    } 
+}
+```
+
+##### Subscriber:
+```java
+import io.crossroads.XS;
+import io.crossroads.XS.Context;
+import io.crossroads.XS.Poller;
+import io.crossroads.XS.Socket;
+
+public class SubscriberJava {
+	
+	private static final String ENDPOINT = "tcp://127.0.0.1:5533";
+	
+	public static void main(String[] args) {
+		
+		final Context context = XS.context();
+		final Socket sub = context.socket(XS.SUB);
+		final Poller poller = context.poller();
+	  
+		sub.connect(ENDPOINT);
+		sub.subscribe(new byte[]{});
+		poller.register(sub);
+		  
+		while(true) {
+			System.out.println("Recv msg: " + new String(sub.recvmsg(0)));
+		}
+    }
+}
+```
+
 
 ## Issues
 

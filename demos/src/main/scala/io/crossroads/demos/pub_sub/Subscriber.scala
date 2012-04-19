@@ -8,7 +8,6 @@ object Subscriber {
 		
 	def main(args: Array[String]): Unit = {
       val context = XS.context
-      
 	  val (sub, poller) = (
 	  		context.socket(XS.SUB),
 	  		context.poller
