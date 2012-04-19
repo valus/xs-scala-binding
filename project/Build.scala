@@ -39,6 +39,8 @@ object BuildDef extends Build {
     		startYear := Some(2012),
     		libraryDependencies ++= Seq(jna, jnr, scalatest),
     		pomIncludeRepository  := { _ => false },
+    		publishMavenStyle := true,
+    		publishArtifact in Test := false,
   			publishTo <<= version { v: String =>
   				val nexus = "https://oss.sonatype.org/"
   					if (v.trim.endsWith("SNAPSHOT"))

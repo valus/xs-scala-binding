@@ -18,14 +18,10 @@
 */
 
 object ScmInfo {
-
-	lazy val scm = Map(
-	    "url" -> "https://git@github.com/valus/xs-scala-binding.git",
-	    "connection" -> "scm:https://git@github.com/valus/xs-scala-binding.git"
-	)
 	
 	def toXml =
     <scm>
-      {scm map { m => "<" + {m._1} +">" +{m._2} + "</" +{m._1} +">"} }
+      <url>https://git@github.com/valus/xs-scala-binding.git</url>
+	  <connection>scm:https://git@github.com/valus/xs-scala-binding.git</connection>
     </scm>
 }
