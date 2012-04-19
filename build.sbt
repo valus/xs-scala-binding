@@ -4,6 +4,8 @@ organization          := "io.crossroads"
 
 name				  := "xs-scala-binding"
 
+version               := "1.0.1-SNAPSHOT"
+
 homepage              := Some(url("https://github.com/valus/xs-scala-binding"))
 
 licenses              += ("GNU LESSER GENERAL PUBLIC LICENSE Version 3", url("http://www.gnu.org/copyleft/lesser.html"))
