@@ -2,6 +2,8 @@ import Dependencies._
 
 organization          := "io.crossroads"
 
+name				  := "xs-scala-binding"
+
 version               := "1.0.0-SNAPSHOT"
 
 homepage              := Some(url("https://github.com/valus/xs-scala-binding"))
@@ -10,21 +12,6 @@ licenses              += ("GNU LESSER GENERAL PUBLIC LICENSE Version 3", url("ht
 
 startYear             := Some(2012)
 
-organizationName      := "xs-scala-binding"
+organizationName      := "Scalaric"
 
 crossScalaVersions    := Seq("2.9.2", "2.9.1-1", "2.9.1")
-
-// Settings for Sonatype compliance
-pomIncludeRepository  := { _ => false }
-
-publishTo 			  <<= version { v: String =>
-  									val nexus = "https://oss.sonatype.org/"
-  									if (v.trim.endsWith("SNAPSHOT"))
-    									Some("snapshots" at nexus + "content/repositories/snapshots")
-  									else
-    									Some("releases" at nexus + "service/local/staging/deploy/maven2")
-					  }
-
-pomExtra              ~= (_ ++ {ScmInfo.toXml})
-
-pomExtra              ~= (_ ++ {Developers.toXml})

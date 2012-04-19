@@ -21,20 +21,45 @@ import Keys._
 import Dependencies._
 
 object BuildDef extends Build {
+  	
+  lazy val root = Project("xs-scala-binding-parent", file("."))
+		  .settings(description:= "Parent for Crossroads I/O Scala binding project", 
+			publishArtifact := false) aggregate(core, demos)
 
-  lazy val XSScalaBinding =
-    Project("xs-scala-binding", file("."))
-      .aggregate(core, demos)
-
-  
   // Core Project  
   // ------------
-  lazy val core = Project(id = "xs-scala-binding-core", base = file("core"))
+  lazy val core = Project(id = "xs-scala-binding", base = file("core"))
     .settings(description:= "Crossroads I/O Scala binding", 
-    		libraryDependencies ++= Seq(jna, jnr, scalatest))
+    		organization:= "io.crossroads", 
+    		name:="xs-scala-binding",
+    		organizationName:= "Scalaric", 
+    		version := "1.0.0-SNAPSHOT",
+    		homepage := Some(url("https://github.com/valus/xs-scala-binding")),
+    		licenses += ("GNU LESSER GENERAL PUBLIC LICENSE Version 3", url("http://www.gnu.org/copyleft/lesser.html")),
+    		startYear := Some(2012),
+    		libraryDependencies ++= Seq(jna, jnr, scalatest),
+    		pomIncludeRepository  := { _ => false },
+  			publishTo <<= version { v: String =>
+  				val nexus = "https://oss.sonatype.org/"
+  					if (v.trim.endsWith("SNAPSHOT"))
+    					Some("snapshots" at nexus + "content/repositories/snapshots")
+  					else
+    					Some("releases" at nexus + "service/local/staging/deploy/maven2")
+			},
+			pomExtra ~= (_ ++ {ScmInfo.toXml}),
+			pomExtra ~= (_ ++ {Developers.toXml})
+    		)
 
   // Demos Project
   // ------------
   lazy val demos = Project(id = "xs-scala-binding-demos", base = file("demos")) dependsOn(core)
-    .settings(description := "Examples for Scala binding")
+    .settings(description := "Examples for Scala binding", 
+    		organization:= "io.crossroads", 
+    		name:="xs-scala-binding-demos",
+    		organizationName:= "Scalaric",
+    		version := "1.0.0-SNAPSHOT",
+    		homepage := Some(url("https://github.com/valus/xs-scala-binding")),
+    		licenses += ("GNU LESSER GENERAL PUBLIC LICENSE Version 3", url("http://www.gnu.org/copyleft/lesser.html")),
+    		startYear := Some(2012),
+			publishArtifact := false)
 }
