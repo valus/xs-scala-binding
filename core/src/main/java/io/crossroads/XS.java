@@ -99,20 +99,27 @@ public class XS {
       ptr = xs.xs_init();
     }
     
-    public int setMaxSockets(int optval) {
-        return setLongContopt(CrossroadsIO$.MODULE$.XS_MAX_SOCKETS(), optval);
+    public void setMaxSockets(int optval) {
+        setLongContopt(CrossroadsIO$.MODULE$.XS_MAX_SOCKETS(), optval);
     }
     
-    public int setIOThreads(int optval) {
-    	return setLongContopt(CrossroadsIO$.MODULE$.XS_IO_THREADS(), optval);
+    public void setIOThreads(int optval) {
+    	setLongContopt(CrossroadsIO$.MODULE$.XS_IO_THREADS(), optval);
     }
     
-    private int setLongContopt(int option, long optval) {
+    private void setLongContopt(int option, long optval) {
       NativeLong length = new NativeLong(Long.SIZE / 8);
       Memory value = new Memory(Long.SIZE / 8);
       value.setLong(0, optval);
       int result = xs.xs_setctxopt(ptr, option, value, length);
-      return result;
+      if(result < 0 ) 
+    	  raiseXSException();
+    }
+    
+    private void raiseXSException() {
+      int errno = xs.xs_errno();
+      String reason = xs.xs_strerror(errno);
+      throw new XSException(reason, errno);
     }
   }
 
@@ -121,7 +128,9 @@ public class XS {
     protected MessageDataBuffer messageDataBuffer = new MessageDataBuffer();
     
     public void close() {
-      xs.xs_close(ptr);
+      int result = xs.xs_close(ptr);
+      if(result < 0) 
+    	  raiseXSException();
     }
 
     public int getType() {
@@ -269,11 +278,15 @@ public class XS {
     }
 
     public void bind(String addr) {
-      xs.xs_bind(ptr, addr);
+      int result = xs.xs_bind(ptr, addr);
+      if(result < 0 ) 
+    	  raiseXSException();
     }
 
     public void connect(String addr) {
-      xs.xs_connect(ptr, addr);
+      int result = xs.xs_connect(ptr, addr);
+      if(result < 0 ) 
+    	  raiseXSException();
     }
 
     public boolean send(byte[] msg, int length, int flags) {
@@ -282,7 +295,7 @@ public class XS {
         NativeLong len = new NativeLong(length);
         if (xs.xs_send(ptr, data, len, flags) == -1) {
           if (xs.xs_errno() == CrossroadsIO$.MODULE$.EAGAIN()) {
-            if (xs.xs_msg_close(message) != 0) {
+            if (xs.xs_msg_close(message) < 0) {
               raiseXSException();
             } else {
               return false;
@@ -293,7 +306,7 @@ public class XS {
             return false;
           }
         }
-        if (xs.xs_msg_close(message) != 0) {
+        if (xs.xs_msg_close(message) < 0) {
           raiseXSException();
         }
         return true;
@@ -306,7 +319,7 @@ public class XS {
         
         if (xs.xs_recv(ptr, data, len, flags) == -1) {
           if (xs.xs_errno() == CrossroadsIO$.MODULE$.EAGAIN()) {
-            if (xs.xs_msg_close(message) != 0) {
+            if (xs.xs_msg_close(message) < 0) {
               raiseXSException();
             } else {
               return null;
@@ -318,7 +331,7 @@ public class XS {
         }
         
         byte[] dataByteArray = data.getByteArray(0, length);
-        if (xs.xs_msg_close(message) != 0) {
+        if (xs.xs_msg_close(message) < 0) {
           raiseXSException();
         }
         return dataByteArray;
@@ -328,7 +341,7 @@ public class XS {
       xs_msg_t message = newXSMessage(msg);
       if (xs.xs_sendmsg(ptr, message, flags) == -1) {
         if (xs.xs_errno() == CrossroadsIO$.MODULE$.EAGAIN()) {
-          if (xs.xs_msg_close(message) != 0) {
+          if (xs.xs_msg_close(message) < 0) {
             raiseXSException();
           } else {
             return false;
@@ -339,7 +352,7 @@ public class XS {
           return false;
         }
       }
-      if (xs.xs_msg_close(message) != 0) {
+      if (xs.xs_msg_close(message) < 0) {
         raiseXSException();
       }
       return true;
@@ -350,7 +363,7 @@ public class XS {
       
       if (xs.xs_recvmsg(ptr, message, flags) == -1) {
         if (xs.xs_errno() == CrossroadsIO$.MODULE$.EAGAIN()) {
-          if (xs.xs_msg_close(message) != 0) {
+          if (xs.xs_msg_close(message) < 0) {
             raiseXSException();
           } else {
             return null;
@@ -363,7 +376,7 @@ public class XS {
       Pointer data = xs.xs_msg_data(message);
       int length = xs.xs_msg_size(message);
       byte[] dataByteArray = data.getByteArray(0, length);
-      if (xs.xs_msg_close(message) != 0) {
+      if (xs.xs_msg_close(message) < 0) {
         raiseXSException();
       }
       return dataByteArray;
@@ -374,11 +387,12 @@ public class XS {
     	Memory value = new Memory(Long.SIZE / 8);
         LongByReference length = new LongByReference(Long.SIZE / 8);
         int result = xs.xs_getmsgopt(message, CrossroadsIO$.MODULE$.XS_MORE(), value, length);
-        if(result == 0) {
-        	if(value.getLong(0) == 1) 
-        		return true;
-  		} else {
+        if(result < 0) {
         	raiseXSException();
+  		} else {
+  			if(value.getLong(0) == 1) 
+        		return true;
+        	
   		}
         return false;
     }
@@ -401,7 +415,9 @@ public class XS {
       NativeLong length = new NativeLong(Long.SIZE / 8);
       Memory value = new Memory(Long.SIZE / 8);
       value.setLong(0, optval);
-      xs.xs_setsockopt(ptr, option, value, length);
+      int result = xs.xs_setsockopt(ptr, option, value, length);
+      if(result < 0)
+      	raiseXSException();
     }
 
     private byte[] getBytesSockopt(int option) {
@@ -415,27 +431,29 @@ public class XS {
       NativeLong length = new NativeLong(optval.length);
       Pointer value = null;
       if (optval.length > 0) {
-        value = value = new Memory(optval.length);
+        value = new Memory(optval.length);
         value.write(0, optval, 0, optval.length);
       } else {
         value = Pointer.NULL;
       }
-      xs.xs_setsockopt(ptr, option, value, length);
+      int result = xs.xs_setsockopt(ptr, option, value, length);
+      if(result < 0)
+        	raiseXSException();
     }
 
     private xs_msg_t newXSMessage(byte[] msg) {
       xs_msg_t message = new xs_msg_t();
       if (msg.length == 0) {
-        if (xs.xs_msg_init_size(message, new NativeLong(msg.length)) != 0) {
+        if (xs.xs_msg_init_size(message, new NativeLong(msg.length)) < 0) {
           raiseXSException();
         }
       } else {
         Memory mem = new Memory(msg.length);
         mem.write(0, msg, 0, msg.length);
-        if (xs.xs_msg_init_data(message, mem, new NativeLong(msg.length), messageDataBuffer, mem) == 0) {
-        	messageDataBuffer.add(mem);
-        } else {
+        if (xs.xs_msg_init_data(message, mem, new NativeLong(msg.length), messageDataBuffer, mem) < 0) {
         	raiseXSException();
+        } else {
+        	messageDataBuffer.add(mem);
         }
       }
       return message;
@@ -443,7 +461,7 @@ public class XS {
 
     private xs_msg_t newXSMessage() {
       xs_msg_t message = new xs_msg_t();
-      if (xs.xs_msg_init(message) != 0) {
+      if (xs.xs_msg_init(message) < 0) {
         raiseXSException();
       }
       return message;
@@ -451,7 +469,7 @@ public class XS {
 
     private xs_msg_t newXSMessage(int length) {
         xs_msg_t message = new xs_msg_t();
-        if (xs.xs_msg_init_size(message, new NativeLong(length)) != 0) {
+        if (xs.xs_msg_init_size(message, new NativeLong(length)) < 0) {
           raiseXSException();
         }
         return message;
@@ -591,6 +609,8 @@ public class XS {
         return 0;
       pollItemCount = 0;
       int result = xs.xs_poll(items, curEventCount, timeout);
+      if(result < 0)
+      	raiseXSException();
       for (int socketIndex = 0; socketIndex < sockets.length; socketIndex++) {
         if (sockets[socketIndex] == null) {
           continue;
@@ -630,6 +650,12 @@ public class XS {
         return false;
       }
       return (revents[index] & mask) > 0;
+    }
+    
+    private void raiseXSException() {
+      int errno = xs.xs_errno();
+      String reason = xs.xs_strerror(errno);
+      throw new XSException(reason, errno);
     }
   }
 }
