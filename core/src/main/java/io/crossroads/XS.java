@@ -281,10 +281,12 @@ public class XS {
       setLongSockopt(CrossroadsIO$.MODULE$.XS_RCVBUF(), rcvbuf);
     }
 
-    public void bind(String addr) {
+    public int bind(String addr) {
       int result = xs.xs_bind(ptr, addr);
       if(result < 0 ) 
     	  raiseXSException();
+      
+      return result;
     }
 
     public void connect(String addr) {
@@ -399,6 +401,16 @@ public class XS {
         	
   		}
         return false;
+    }
+    
+    public boolean shutdown(int how) {
+    	int result = xs.xs_shutdown(ptr, how);
+    	if(result < 0) {
+    		raiseXSException();
+    		return false;
+    	} else {
+    		return true;
+    	}
     }
     protected Socket(Context context, int type) {
       ptr = xs.xs_socket(context.ptr, type);
