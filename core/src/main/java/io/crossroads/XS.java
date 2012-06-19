@@ -281,6 +281,14 @@ public class XS {
       setLongSockopt(CrossroadsIO$.MODULE$.XS_RCVBUF(), rcvbuf);
     }
 
+    public void setSurveyTimeout(long timeout) {
+    	setLongSockopt(CrossroadsIO$.MODULE$.XS_SURVEY_TIMEOUT(), timeout);
+    }
+    
+    public long getSurveyTimeout() {
+    	return getLongSockopt(CrossroadsIO$.MODULE$.XS_SURVEY_TIMEOUT());
+    }
+    
     public int bind(String addr) {
       int result = xs.xs_bind(ptr, addr);
       if(result < 0 ) 
