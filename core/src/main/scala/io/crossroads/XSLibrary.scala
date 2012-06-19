@@ -57,7 +57,7 @@ object CrossroadsIO {
     /** context options */
   val XS_MAX_SOCKETS = 1
   val XS_IO_THREADS = 2
-  
+  val XS_PLUGIN = 3
   
     /** Socket types */
   val XS_PAIR = 0
@@ -71,7 +71,10 @@ object CrossroadsIO {
   val XS_PUSH = 8
   val XS_XPUB = 9
   val XS_XSUB = 10
-  
+  val XS_SURVEYOR = 11
+  val XS_RESPONDENT = 12
+  val XS_XSURVEYOR = 13
+  val XS_XRESPONDENT = 14
   
     /** Socket options */
   val XS_AFFINITY = 4
@@ -98,7 +101,8 @@ object CrossroadsIO {
   val XS_SNDTIMEO = 28
   val XS_IPV4ONLY = 31
   val XS_KEEPALIVE = 32
-  
+  val XS_PROTOCOL = 33
+  val XS_SURVEY_TIMEOUT = 35
   
   /** Message options */
   val XS_MORE = 1

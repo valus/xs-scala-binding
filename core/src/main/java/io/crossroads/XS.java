@@ -44,7 +44,11 @@ public class XS {
   public static final int XREP = CrossroadsIO$.MODULE$.XS_XREP();
   public static final int PULL = CrossroadsIO$.MODULE$.XS_PULL();
   public static final int PUSH = CrossroadsIO$.MODULE$.XS_PUSH();
-
+  public static final int SURVEYOR = CrossroadsIO$.MODULE$.XS_SURVEYOR();
+  public static final int RESPONDENT = CrossroadsIO$.MODULE$.XS_RESPONDENT();
+  public static final int XSURVEYOR = CrossroadsIO$.MODULE$.XS_XSURVEYOR();
+  public static final int XRESPONDENT = CrossroadsIO$.MODULE$.XS_XRESPONDENT();
+  
   static {
     xs.xs_version(majorVersion, minorVersion, patchVersion);
   }
