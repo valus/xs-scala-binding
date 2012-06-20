@@ -27,6 +27,7 @@ class XSSpec extends WordSpec with MustMatchers {
 		  val sub = context.socket(XS.PAIR)
 		  sub.getType must equal(XS.PAIR)
 		  sub.close 
+		  context.term
 	  }
 	  "support pub-sub connection pattern" in {
 		  val context = XS.context
@@ -48,6 +49,7 @@ class XSSpec extends WordSpec with MustMatchers {
       
 		  sub.close
 		  pub.close
+		  context.term
 	  }
 	  "support req-rep connection pattern" in {
 		  val context = XS.context
@@ -67,6 +69,7 @@ class XSSpec extends WordSpec with MustMatchers {
 		  
 		  req.close
 		  rep.close
+		  context.term
 	  }
 	  "support push-pull connection pattern" in {
 		  val context = XS.context
@@ -84,6 +87,7 @@ class XSSpec extends WordSpec with MustMatchers {
 		  
 		  push.close
 		  pull.close
+		  context.term
 	  }
 	  "support Exclusive pair connection pattern" in {
 		  val context = XS.context
@@ -105,6 +109,29 @@ class XSSpec extends WordSpec with MustMatchers {
 		  incomingMessage must equal(responseMessage.getBytes)
 		  peer2.close
 		  peer1.close
+		  context.term
+	  } 
+	  "support surveyor-respondent connection pattern" in {
+	  	val context = XS.context
+	  	val (surveyor, respondent) = (
+	  		context.socket(XS.SURVEYOR),
+	  		context.socket(XS.RESPONDENT)
+	  	)
+	  	
+	  	surveyor.bind("inproc://xs-spec")
+	  	respondent.connect("inproc://xs-spec")
+	  	
+	  	surveyor.sendmsg("ABC".getBytes, 0)
+	  	var outputMsg = new String(respondent.recvmsg(0))
+	  	respondent.sendmsg("DE".getBytes, 0)
+	  	outputMsg must equal("ABC")
+	  	
+	  	outputMsg = new String(surveyor.recvmsg(0))
+	  	outputMsg must equal("DE")
+	  	
+	  	surveyor.close
+	  	respondent.close
+	  	context.term
 	  }
 	  "support polling of multiple sockets" in {
 		  val context = XS.context
@@ -120,12 +147,13 @@ class XSSpec extends WordSpec with MustMatchers {
 		  sub_x.close
 		  sub_y.close
 		  pub.close
+		  context.term
 	  }
 	  "support sending of zero-length messages" in {
 		  val context = XS.context
 		  val pub = context.socket(XS.PUB)
-      		pub.sendmsg("".getBytes, 0)
-      		pub.close
+          pub.sendmsg("".getBytes, 0) must equal(true)
+      	  pub.close
       }
   	}
   	
