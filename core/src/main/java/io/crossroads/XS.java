@@ -48,6 +48,9 @@ public class XS {
   public static final int RESPONDENT = CrossroadsIO$.MODULE$.XS_RESPONDENT();
   public static final int XSURVEYOR = CrossroadsIO$.MODULE$.XS_XSURVEYOR();
   public static final int XRESPONDENT = CrossroadsIO$.MODULE$.XS_XRESPONDENT();
+  public static final int XS_FILTER_ALL = CrossroadsIO$.MODULE$.XS_FILTER_ALL();
+  public static final int XS_FILTER_PREFIX = CrossroadsIO$.MODULE$.XS_FILTER_PREFIX();
+  public static final int XS_FILTER_TOPIC = CrossroadsIO$.MODULE$.XS_FILTER_TOPIC();
   
   static {
     xs.xs_version(majorVersion, minorVersion, patchVersion);
@@ -289,6 +292,14 @@ public class XS {
     	return getLongSockopt(CrossroadsIO$.MODULE$.XS_SURVEY_TIMEOUT());
     }
     
+    public void setFilter(long filter) {
+    	setLongSockopt(CrossroadsIO$.MODULE$.XS_FILTER(), filter);
+    }
+    
+    public long getFilter() {
+    	return getLongSockopt(CrossroadsIO$.MODULE$.XS_FILTER());
+    }
+    
     public int bind(String addr) {
       int result = xs.xs_bind(ptr, addr);
       if(result < 0 ) 
@@ -297,10 +308,11 @@ public class XS {
       return result;
     }
 
-    public void connect(String addr) {
+    public int connect(String addr) {
       int result = xs.xs_connect(ptr, addr);
       if(result < 0 ) 
     	  raiseXSException();
+      return result;
     }
 
     public boolean send(byte[] msg, int length, int flags) {
@@ -420,6 +432,7 @@ public class XS {
     		return true;
     	}
     }
+    
     protected Socket(Context context, int type) {
       ptr = xs.xs_socket(context.ptr, type);
     }

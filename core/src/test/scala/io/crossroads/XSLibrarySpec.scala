@@ -149,6 +149,14 @@ class CrossroadsIOLibrarySpec extends WordSpec with MustMatchers with BeforeAndA
       xs.xs_close(sub)
       xs.xs_close(pub)
     }
+    "xs_shutdown" in {
+      val context = xs.xs_init
+      val socket = xs.xs_socket(context, XS_PUB)
+      val id = xs.xs_bind(socket, "tcp://127.0.0.1:3000")
+      val rc = xs.xs_shutdown(socket, id)
+      rc must equal(0)
+      xs.xs_close(socket)
+    }
     "xs_socket" in { 
       val context = xs.xs_init
       val socket = xs.xs_socket(context, XS_PUB)
