@@ -2,7 +2,7 @@ Scala Binding for Crossroads I/O
 ================================
 <i>(Fork of Scala binding for 0MQ; [zeromq-scala-binding][zeromq-scala])</i>
 
-The Scala binding for [Crossroads I/O][xs] is based on libxs versions 1.0.x and uses JNA for accessing native functions. 
+The Scala binding for [Crossroads I/O][xs] is based on libxs versions 1.2.0 and uses JNA for accessing native functions. 
 The Scala binding is a thin wrapper of the Crossroads I/O API.
 
 
@@ -14,7 +14,7 @@ For SBT projects add below code to the `project/build.sbt`, for plugin library d
 
     resolvers += "Sonatype Repository " at "https://oss.sonatype.org/content/repositories/releases/"
   
-    libraryDependencies += "io.crossroads" %% "xs-scala-binding" % "1.0.0"
+    libraryDependencies += "io.crossroads" %% "xs-scala-binding" % "1.0.1"
 
 
 ### Maven
@@ -25,7 +25,7 @@ For maven projects add below code to the `pom.xml` file:
 		<dependency>
 	   		<groupId>io.crossroads</groupId>
 			<artifactId>xs-scala-binding_2.9.1</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1</version>
 		</dependency>
 	</dependencies>
 
