@@ -66,11 +66,11 @@ class CrossroadsIOLibrarySpec extends WordSpec with MustMatchers with BeforeAndA
     "xs_(get|set)sockopt" in {
       val context = xs.xs_init
       val socket = xs.xs_socket(context, XS_PUB)
-      val (offset, sizeInBytes, optionValue) = (0, 8, 1)
+      val (offset, sizeInBytes, optionValue) = (0, 4, 1234)
       val value = new Memory(sizeInBytes) { setInt(offset, optionValue) }
       val (length, lengthRef) = (new NativeLong(sizeInBytes), new LongByReference(sizeInBytes))
-      xs.xs_setsockopt(socket, XS_AFFINITY, value, length) must equal(0)
-      xs.xs_getsockopt(socket, XS_AFFINITY, value, lengthRef) must equal(0)
+      xs.xs_setsockopt(socket, XS_SNDHWM, value, length) must equal(0)
+      xs.xs_getsockopt(socket, XS_SNDHWM, value, lengthRef) must equal(0)
       value.getInt(offset) must equal(optionValue)
       xs.xs_close(socket)
     }

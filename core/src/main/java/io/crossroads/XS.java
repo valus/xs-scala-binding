@@ -141,35 +141,35 @@ public class XS {
     }
 
     public int getType() {
-      return (int) getLongSockopt(CrossroadsIO$.MODULE$.XS_TYPE());
+      return getIntSockopt(CrossroadsIO$.MODULE$.XS_TYPE());
     }
 
-    public long getLinger() {
-      return (int) getLongSockopt(CrossroadsIO$.MODULE$.XS_LINGER());
+    public int getLinger() {
+      return getIntSockopt(CrossroadsIO$.MODULE$.XS_LINGER());
     }
 
-    public long getReconnectIVL() {
-      return (int) getLongSockopt(CrossroadsIO$.MODULE$.XS_RECONNECT_IVL());
+    public int getReconnectIVL() {
+      return getIntSockopt(CrossroadsIO$.MODULE$.XS_RECONNECT_IVL());
     }
 
-    public long getBacklog() {
-      return (int) getLongSockopt(CrossroadsIO$.MODULE$.XS_BACKLOG());
+    public int getBacklog() {
+      return getIntSockopt(CrossroadsIO$.MODULE$.XS_BACKLOG());
     }
 
-    public long getReconnectIVLMax() {
-      return getLongSockopt(CrossroadsIO$.MODULE$.XS_RECONNECT_IVL_MAX());
+    public int getReconnectIVLMax() {
+      return getIntSockopt(CrossroadsIO$.MODULE$.XS_RECONNECT_IVL_MAX());
     }
 
     public long getMaxMsgSize() {
       return getLongSockopt(CrossroadsIO$.MODULE$.XS_MAXMSGSIZE());
     }
 
-    public long getSndHWM() {
-      return getLongSockopt(CrossroadsIO$.MODULE$.XS_SNDHWM());
+    public int getSndHWM() {
+      return getIntSockopt(CrossroadsIO$.MODULE$.XS_SNDHWM());
     }
 
-    public long getRcvHWM() {
-      return getLongSockopt(CrossroadsIO$.MODULE$.XS_RCVHWM());
+    public int getRcvHWM() {
+      return getIntSockopt(CrossroadsIO$.MODULE$.XS_RCVHWM());
     }
 
     public long getAffinity() {
@@ -180,36 +180,36 @@ public class XS {
       return getBytesSockopt(CrossroadsIO$.MODULE$.XS_IDENTITY());
     }
 
-    public long getRate() {
-      return getLongSockopt(CrossroadsIO$.MODULE$.XS_RATE());
+    public int getRate() {
+      return getIntSockopt(CrossroadsIO$.MODULE$.XS_RATE());
     }
 
-    public long getRecoveryInterval() {
-      return getLongSockopt(CrossroadsIO$.MODULE$.XS_RECOVERY_IVL());
+    public int getRecoveryInterval() {
+      return getIntSockopt(CrossroadsIO$.MODULE$.XS_RECOVERY_IVL());
     }
 
-    public void setReceiveTimeOut(long timeout) {
-      setLongSockopt(CrossroadsIO$.MODULE$.XS_RCVTIMEO(), timeout);
+    public void setReceiveTimeOut(int timeout) {
+      setIntSockopt(CrossroadsIO$.MODULE$.XS_RCVTIMEO(), timeout);
     }
 
-    public long getReceiveTimeOut() {
-      return getLongSockopt(CrossroadsIO$.MODULE$.XS_RCVTIMEO());
+    public int getReceiveTimeOut() {
+      return getIntSockopt(CrossroadsIO$.MODULE$.XS_RCVTIMEO());
     }
 
-    public void setSendTimeOut(long timeout) {
-      setLongSockopt(CrossroadsIO$.MODULE$.XS_SNDTIMEO(), timeout);
+    public void setSendTimeOut(int timeout) {
+      setIntSockopt(CrossroadsIO$.MODULE$.XS_SNDTIMEO(), timeout);
     }
 
-    public long getSendTimeOut() {
-      return getLongSockopt(CrossroadsIO$.MODULE$.XS_SNDTIMEO());
+    public int getSendTimeOut() {
+      return getIntSockopt(CrossroadsIO$.MODULE$.XS_SNDTIMEO());
     }
 
-    public long getSendBufferSize() {
-      return getLongSockopt(CrossroadsIO$.MODULE$.XS_SNDBUF());
+    public int getSendBufferSize() {
+      return getIntSockopt(CrossroadsIO$.MODULE$.XS_SNDBUF());
     }
 
-    public long getReceiveBufferSize() {
-      return getLongSockopt(CrossroadsIO$.MODULE$.XS_RCVBUF());
+    public int getReceiveBufferSize() {
+      return getIntSockopt(CrossroadsIO$.MODULE$.XS_RCVBUF());
     }
 
     public boolean hasReceiveMore() {
@@ -228,28 +228,28 @@ public class XS {
       setLongSockopt(CrossroadsIO$.MODULE$.XS_LINGER(), linger);
     }
 
-    public void setReconnectIVL(long reconnectIVL) {
-      setLongSockopt(CrossroadsIO$.MODULE$.XS_RECONNECT_IVL(), reconnectIVL);
+    public void setReconnectIVL(int reconnectIVL) {
+      setIntSockopt(CrossroadsIO$.MODULE$.XS_RECONNECT_IVL(), reconnectIVL);
     }
 
-    public void setBacklog(long backlog) {
-      setLongSockopt(CrossroadsIO$.MODULE$.XS_BACKLOG(), backlog);
+    public void setBacklog(int backlog) {
+      setIntSockopt(CrossroadsIO$.MODULE$.XS_BACKLOG(), backlog);
     }
 
-    public void setReconnectIVLMax(long reconnectIVLMax) {
-      setLongSockopt(CrossroadsIO$.MODULE$.XS_RECONNECT_IVL_MAX(), reconnectIVLMax);
+    public void setReconnectIVLMax(int reconnectIVLMax) {
+      setIntSockopt(CrossroadsIO$.MODULE$.XS_RECONNECT_IVL_MAX(), reconnectIVLMax);
     }
 
     public void setMaxMsgSize(long maxMsgSize) {
       setLongSockopt(CrossroadsIO$.MODULE$.XS_MAXMSGSIZE(), maxMsgSize);
     }
 
-    public void setSndHWM(long sndHWM) {
-      setLongSockopt(CrossroadsIO$.MODULE$.XS_SNDHWM(), sndHWM);
+    public void setSndHWM(int sndHWM) {
+      setIntSockopt(CrossroadsIO$.MODULE$.XS_SNDHWM(), sndHWM);
     }
 
-    public void setRcvHWM(long rcvHWM) {
-      setLongSockopt(CrossroadsIO$.MODULE$.XS_RCVHWM(), rcvHWM);
+    public void setRcvHWM(int rcvHWM) {
+      setIntSockopt(CrossroadsIO$.MODULE$.XS_RCVHWM(), rcvHWM);
     }
 
     public void setAffinity(long affinity) {
@@ -268,36 +268,36 @@ public class XS {
       setBytesSockopt(CrossroadsIO$.MODULE$.XS_UNSUBSCRIBE(), topic);
     }
 
-    public void setRate (long rate) {
-      setLongSockopt(CrossroadsIO$.MODULE$.XS_RATE(), rate);
+    public void setRate (int rate) {
+      setIntSockopt(CrossroadsIO$.MODULE$.XS_RATE(), rate);
     }
 
-    public void setRecoveryInterval(long recovery_ivl) {
-      setLongSockopt(CrossroadsIO$.MODULE$.XS_RECONNECT_IVL(), recovery_ivl);
+    public void setRecoveryInterval(int recovery_ivl) {
+      setIntSockopt(CrossroadsIO$.MODULE$.XS_RECONNECT_IVL(), recovery_ivl);
     }
 
-    public void setSendBufferSize(long sndbuf) {
-      setLongSockopt(CrossroadsIO$.MODULE$.XS_SNDBUF(), sndbuf);
+    public void setSendBufferSize(int sndbuf) {
+      setIntSockopt(CrossroadsIO$.MODULE$.XS_SNDBUF(), sndbuf);
     }
 
-    public void setReceiveBufferSize(long rcvbuf) {
-      setLongSockopt(CrossroadsIO$.MODULE$.XS_RCVBUF(), rcvbuf);
+    public void setReceiveBufferSize(int rcvbuf) {
+      setIntSockopt(CrossroadsIO$.MODULE$.XS_RCVBUF(), rcvbuf);
     }
 
-    public void setSurveyTimeout(long timeout) {
-    	setLongSockopt(CrossroadsIO$.MODULE$.XS_SURVEY_TIMEOUT(), timeout);
+    public void setSurveyTimeout(int timeout) {
+      setIntSockopt(CrossroadsIO$.MODULE$.XS_SURVEY_TIMEOUT(), timeout);
     }
     
-    public long getSurveyTimeout() {
-    	return getLongSockopt(CrossroadsIO$.MODULE$.XS_SURVEY_TIMEOUT());
+    public int getSurveyTimeout() {
+      return getIntSockopt(CrossroadsIO$.MODULE$.XS_SURVEY_TIMEOUT());
     }
     
-    public void setFilter(long filter) {
-    	setLongSockopt(CrossroadsIO$.MODULE$.XS_FILTER(), filter);
+    public void setFilter(int filter) {
+    	setIntSockopt(CrossroadsIO$.MODULE$.XS_FILTER(), filter);
     }
     
     public long getFilter() {
-    	return getLongSockopt(CrossroadsIO$.MODULE$.XS_FILTER());
+    	return getIntSockopt(CrossroadsIO$.MODULE$.XS_FILTER());
     }
     
     public int bind(String addr) {
@@ -410,13 +410,13 @@ public class XS {
 
     public boolean isMore(byte[] msg) {
     	xs_msg_t message = newXSMessage(msg);
-    	Memory value = new Memory(Long.SIZE / 8);
-        LongByReference length = new LongByReference(Long.SIZE / 8);
+    	Memory value = new Memory(Integer.SIZE / 8);
+        LongByReference length = new LongByReference(Integer.SIZE / 8);
         int result = xs.xs_getmsgopt(message, CrossroadsIO$.MODULE$.XS_MORE(), value, length);
         if(result < 0) {
         	raiseXSException();
   		} else {
-  			if(value.getLong(0) == 1) 
+  			if(value.getInt(0) == 1) 
         		return true;
         	
   		}
@@ -441,6 +441,13 @@ public class XS {
       close();
     }
 
+    private int getIntSockopt(int option) {
+        Memory value = new Memory(Integer.SIZE / 8);
+        LongByReference length = new LongByReference(Integer.SIZE / 8);
+        xs.xs_getsockopt(ptr, option, value, length);
+        return value.getInt(0);
+      }
+    
     private long getLongSockopt(int option) {
       Memory value = new Memory(Long.SIZE / 8);
       LongByReference length = new LongByReference(Long.SIZE / 8);
@@ -457,6 +464,15 @@ public class XS {
       	raiseXSException();
     }
 
+    private void setIntSockopt(int option, int optval) {
+    	NativeLong length = new NativeLong(Integer.SIZE / 8);
+    	Memory value = new Memory(Integer.SIZE / 8);
+    	value.setInt(0, optval);
+    	int result = xs.xs_setsockopt(ptr, option, value, length);
+        if(result < 0)
+        	raiseXSException();
+    }
+    
     private byte[] getBytesSockopt(int option) {
       Memory value = new Memory(1024);
       LongByReference length = new LongByReference(1024);
