@@ -4,7 +4,7 @@ organization          := "io.crossroads"
 
 name				  := "xs-scala-binding"
 
-version               := "1.0.1-SNAPSHOT"
+version               := "1.0.2-SNAPSHOT"
 
 homepage              := Some(url("https://github.com/valus/xs-scala-binding"))
 
