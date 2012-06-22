@@ -155,6 +155,16 @@ class XSSpec extends WordSpec with MustMatchers {
           pub.sendmsg("".getBytes, 0) must equal(true)
       	  pub.close
       }
+	  "support of filtering" in {
+	  	val context = XS.context
+	  	val sub = context.socket(XS.SUB)
+	  	
+	  	sub.setFilter(XS_FILTER_TOPIC)
+	  	sub.getFilter must equal(XS_FILTER_TOPIC)
+	  	
+	  	sub.close
+	  	context.term
+	  }
   	}
   	
   	def connectSubscriber(context: Context) = {

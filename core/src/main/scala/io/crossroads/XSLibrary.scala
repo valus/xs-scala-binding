@@ -106,11 +106,10 @@ object CrossroadsIO {
   val XS_FILTER = 34
   
   /** Filters options */
+  val XS_PLUGIN_FILTER = 1
   val XS_FILTER_ALL = 0
   val XS_FILTER_PREFIX = 1
   val XS_FILTER_TOPIC = 2
-  
-  val XS_PLUGIN_FILTER = 1
   
   /** Message options */
   val XS_MORE = 1
