@@ -18,8 +18,8 @@
 */
 package io.crossroads.demos.req_rep
 
-import io.crossroads.XS
-import io.crossroads.XS.Socket
+import io.crossroads.jna.XS
+import io.crossroads.jna.XS.Socket;
 
 object Server {
 

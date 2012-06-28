@@ -17,11 +17,12 @@ package io.crossroads
 
 import org.scalatest.WordSpec
 import org.scalatest.matchers.MustMatchers
-import io.crossroads.XS._
+import io.crossroads.jna.XS._
+import io.crossroads.jna.XS
 
 
-class XSSpec extends WordSpec with MustMatchers {
-  "XS" must {
+class XSSpecJNA extends WordSpec with MustMatchers {
+  "XS - JNA" must {
 	  "support Socket#getType" in {
 		  val context = XS.context
 		  val sub = context.socket(XS.PAIR)

@@ -64,4 +64,6 @@ object BuildDef extends Build {
     		licenses += ("GNU LESSER GENERAL PUBLIC LICENSE Version 3", url("http://www.gnu.org/copyleft/lesser.html")),
     		startYear := Some(2012),
 			publishArtifact := false)
+
+	
 }

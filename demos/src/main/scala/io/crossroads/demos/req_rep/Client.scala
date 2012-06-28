@@ -18,7 +18,7 @@
 */
 package io.crossroads.demos.req_rep
 
-import io.crossroads.XS
+import io.crossroads.jna.XS
 
 object Client {
 

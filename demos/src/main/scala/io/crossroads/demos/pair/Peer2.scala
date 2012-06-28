@@ -18,8 +18,8 @@
 */
 package io.crossroads.demos.pair
 
-import io.crossroads.XS
-import io.crossroads.XS.Socket
+import io.crossroads.jna.XS
+import io.crossroads.jna.XS.Socket;
 
 object Peer2 {
 

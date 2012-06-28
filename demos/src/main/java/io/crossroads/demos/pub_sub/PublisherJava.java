@@ -18,9 +18,9 @@
 */
 package io.crossroads.demos.pub_sub;
 
-import io.crossroads.XS;
-import io.crossroads.XS.Context;
-import io.crossroads.XS.Socket;
+import io.crossroads.jna.XS;
+import io.crossroads.jna.XS.Context;
+import io.crossroads.jna.XS.Socket;
 
 public class PublisherJava {
 
@@ -29,14 +29,14 @@ public class PublisherJava {
 	public static void main(String[] args) {
 		
 		final Context context = XS.context();
-		final Socket pub = context.socket(XS.PUB);
-		pub.bind(ENDPOINT);
+		final Socket pub = context.socket(XS.PUSH);
+		pub.connect(ENDPOINT);
 	  
-		final String msg = "hello";
+		final String msg = "h";
 	  
 		while(true) {
-			System.out.println("Send msg: " + msg);
-			pub.sendmsg(msg.getBytes(), 0);
+			//System.out.println("Send msg: " + msg);
+			pub.send(msg.getBytes(), 1, 0);
 		}
     } 
 }

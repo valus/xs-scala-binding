@@ -1,31 +1,15 @@
-/*
-    Copyright (c) 2012 the original author or authors.
-
-    This file is part of scala-xs-binding project.
-
-    scala-xs-binding is free software; you can redistribute it and/or modify it
-    under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation; either version 3 of the License, or
-    (at your option) any later version.
-
-    scala-xs-binding is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package io.crossroads;
+package io.crossroads.jna;
 
 import com.sun.jna.*;
 import com.sun.jna.ptr.*;
+
+import io.crossroads.XSException;
+
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
-
-import io.crossroads.CrossroadsIOLibrary;
 
 public class XS {
   private static final CrossroadsIOLibrary xs = CrossroadsIO$.MODULE$.loadLibrary();
@@ -316,52 +300,21 @@ public class XS {
     }
 
     public boolean send(byte[] msg, int length, int flags) {
-        xs_msg_t message = newXSMessage(msg);
-        Pointer data = xs.xs_msg_data(message);
-        NativeLong len = new NativeLong(length);
-        if (xs.xs_send(ptr, data, len, flags) == -1) {
-          if (xs.xs_errno() == CrossroadsIO$.MODULE$.EAGAIN()) {
-            if (xs.xs_msg_close(message) < 0) {
-              raiseXSException();
-            } else {
-              return false;
-            }
-          } else {
-            xs.xs_msg_close(message);
-            raiseXSException();
+        if (xs.xs_send(ptr, msg, length, flags) < 0) {
+        	raiseXSException();
             return false;
-          }
-        }
-        if (xs.xs_msg_close(message) < 0) {
-          raiseXSException();
         }
         return true;
       }
 
-      public byte[] recv(int length, int flags) {
-        xs_msg_t message = newXSMessage(length);
-        Pointer data = xs.xs_msg_data(message);
-        NativeLong len = new NativeLong(length);
-        
-        if (xs.xs_recv(ptr, data, len, flags) == -1) {
-          if (xs.xs_errno() == CrossroadsIO$.MODULE$.EAGAIN()) {
-            if (xs.xs_msg_close(message) < 0) {
-              raiseXSException();
-            } else {
-              return null;
-            }
-          } else {
-            xs.xs_msg_close(message);
-            raiseXSException();
-          }
+    public byte[] recv(int length, int flags) {
+    	ByteBuffer bb = ByteBuffer.allocate(length);
+        byte[] bba = bb.array();
+        if (xs.xs_recv(ptr, bba, length, flags) < 0) {
+        	raiseXSException();
         }
-        
-        byte[] dataByteArray = data.getByteArray(0, length);
-        if (xs.xs_msg_close(message) < 0) {
-          raiseXSException();
-        }
-        return dataByteArray;
-      }
+        return bba;
+    }
       
     public boolean sendmsg(byte[] msg, int flags) {
       xs_msg_t message = newXSMessage(msg);

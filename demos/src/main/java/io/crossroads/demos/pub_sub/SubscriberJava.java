@@ -18,10 +18,10 @@
 */
 package io.crossroads.demos.pub_sub;
 
-import io.crossroads.XS;
-import io.crossroads.XS.Context;
-import io.crossroads.XS.Poller;
-import io.crossroads.XS.Socket;
+import io.crossroads.jna.XS;
+import io.crossroads.jna.XS.Context;
+import io.crossroads.jna.XS.Poller;
+import io.crossroads.jna.XS.Socket;
 
 public class SubscriberJava {
 	
@@ -30,15 +30,20 @@ public class SubscriberJava {
 	public static void main(String[] args) {
 		
 		final Context context = XS.context();
-		final Socket sub = context.socket(XS.SUB);
-		final Poller poller = context.poller();
+		final Socket sub = context.socket(XS.PULL);
 	  
-		sub.connect(ENDPOINT);
-		sub.subscribe(new byte[]{});
-		poller.register(sub);
-		  
+		sub.bind(ENDPOINT);
+		int nrMsg = 0;
+		long startTime = System.currentTimeMillis();
 		while(true) {
-			System.out.println("Recv msg: " + new String(sub.recvmsg(0)));
+			sub.recv(1,0);
+			//System.out.println("Recv msg: " + new String(sub.recv(1,0)));
+			if(nrMsg == 1000000) break;
+			nrMsg++;
 		}
+		long endTime = System.currentTimeMillis();
+		long time = (endTime - startTime)/1000;
+		System.out.println("Time: " + time);
+		System.out.println("Throughput: " + nrMsg/time);
     }
 }

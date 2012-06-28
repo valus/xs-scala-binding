@@ -18,7 +18,7 @@
 */
 package io.crossroads.demos.pub_sub
 
-import io.crossroads.XS
+import io.crossroads.jna.XS
 
 object Publisher {
 
