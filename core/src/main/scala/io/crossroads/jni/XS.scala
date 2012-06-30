@@ -208,10 +208,7 @@ object XS {
     	val bb:ByteBuffer = ByteBuffer.allocate(length)
         val bba:Array[Byte] = bb.array
         
-        if(XSLibrary.xs_recv(ptr, bba, length, flags) < 0) {
-            raiseXSException();
-        }
-    	bba
+        XSLibrary.xs_recv(ptr, bba, length, flags)
 	}
       
 	/*def sendmsg(msg: Array[Byte], flags: Int): Boolean {

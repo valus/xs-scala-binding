@@ -150,7 +150,7 @@ object XSLibrary {
   //def xs_poll(items: Array[xs_pollitem_t], nitems: Int, timeout: Int): Int
   //def xs_recvmsg(socket: Pointer, msg: xs_msg_t, flags: Int): Int
   @native
-  def xs_recv(socket: Long, buf: Array[Byte], len: Int, flags: Int): Int
+  def xs_recv(socket: Long, buf: Array[Byte], len: Int, flags: Int): Array[Byte]
   //def xs_sendmsg(socket: Long, msg: xs_msg_t, flags: Int): Int
   @native
   def xs_send(socket: Long, buf: Array[Byte], len: Int, flags: Int): Int

@@ -76,7 +76,7 @@ JNIEXPORT jlong JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1init
  * Method:    xs_recv
  * Signature: (J[BII)I
  */
-JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1recv
+JNIEXPORT jbyteArray JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1recv
   (JNIEnv *, jobject, jlong, jbyteArray, jint, jint);
 
 /*

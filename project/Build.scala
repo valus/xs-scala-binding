@@ -65,5 +65,17 @@ object BuildDef extends Build {
     		startYear := Some(2012),
 			publishArtifact := false)
 
+	// Performance Project
+	// -------------------
+	lazy val performance = Project(id = "xs-scala-binding-performance", base = file("performance")) dependsOn(core)
+		.settings(description := "Performance examples for Scala binding",
+			organization := "io.crossroads",
+			name:="sx-scala-binding-performance",
+			organizationName:= "Scalaric",
+			version:= "1.0.2-SNAPSHOT",
+			homepage := Some(url("https://github.com/valus/xs-scala-binding")),
+    		licenses += ("GNU LESSER GENERAL PUBLIC LICENSE Version 3", url("http://www.gnu.org/copyleft/lesser.html")),
+    		startYear := Some(2012),
+			publishArtifact := false)
 	
 }

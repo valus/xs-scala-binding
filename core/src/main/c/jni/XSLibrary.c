@@ -144,7 +144,7 @@ JNIEXPORT jlong JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1init
  * Method:    xs_recv
  * Signature: (J[BII)I
  */
-JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1recv
+JNIEXPORT jbyteArray JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1recv
   (JNIEnv *env, jobject obj, jlong socket, jbyteArray buffer, jint length, jint flags) {
   
     void* socket_a = 0;
@@ -152,10 +152,10 @@ JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1recv
     int result = 0;
     
     socket_a = (void*) socket;
-    buffer_a = (jbyte*) (*env)->GetDirectBufferAddress(env, buffer);
-    result = xs_recv(socket_a, buffer_a, length, flags);
+    //buffer_a = (jbyte*) (*env)->GetDirectBufferAddress(env, buffer);
+    result = xs_recv(socket_a, buffer, length, flags);
     
-    return result;
+    return buffer;
 }
 
 /*
@@ -172,7 +172,7 @@ JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1send
     
     socket_a = (void*) socket;
     buffer_a = (jbyte*) (*env)->GetDirectBufferAddress(env, buffer);
-    result = xs_send(socket_a, buffer_a, length, flags);
+    result = xs_send(socket_a, buffer, length, flags);
 
     return result;
   }
