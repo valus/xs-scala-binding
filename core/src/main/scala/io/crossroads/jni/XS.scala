@@ -52,9 +52,12 @@ object XS {
   def context() = new Context()
 
   class Context {
-    var ptr: Long = XSLibrary.xs_init()
+    val ptr: Long = XSLibrary.xs_init()
     
-    def socket(socketType: Int) = new Socket(this, socketType)
+    def socket(socketType: Int): Socket = {
+    	val socket = new Socket(this, socketType)
+    	socket.createSocket
+    }
 
     def poller() = new Poller(this)
 
@@ -85,10 +88,13 @@ object XS {
 
   class Socket(context: Context, socketType: Int) {
   	  
-  	var ptr: Long = XSLibrary.xs_socket(context.ptr, socketType)
+  	var ptr: Long = -1
 	//var MessageDataBuffer messageDataBuffer = new MessageDataBuffer()
 	  
-	  
+	def createSocket(): Socket = {
+  		ptr = XSLibrary.xs_socket(context.ptr, socketType)
+  		this
+  	}
 	  
 	def close(): Int = {
   		val result = XSLibrary.xs_close(ptr)
@@ -280,13 +286,13 @@ object XS {
 
     def getIntSockopt(option: Int): Int = {
         var value: Int = -1
-        XSLibrary.xs_getsockoptInt(ptr, option, value)
+        value = XSLibrary.xs_getsockoptInt(ptr, option, value)
        	value
     }
     
     def getLongSockopt(option: Int): Long = {
     	var value: Long = -1
-    	XSLibrary.xs_getsockoptLong(ptr, option, value)
+    	value = XSLibrary.xs_getsockoptLong(ptr, option, value)
     	value
     }
 
@@ -304,7 +310,7 @@ object XS {
     
     def getBytesSockopt(option: Int): Array[Byte] = {
       var value: Array[Byte] = null
-      val result = XSLibrary.xs_getsockoptByte(ptr, option, value)
+      value = XSLibrary.xs_getsockoptByte(ptr, option, value)
       value
     }
 

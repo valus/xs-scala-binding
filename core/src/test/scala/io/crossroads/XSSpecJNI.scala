@@ -119,7 +119,7 @@ class XSSpecJNI extends WordSpec with MustMatchers {
 	  	respondent.close
 	  	context.term
 	  }
-	  /*"support polling of multiple sockets" in {
+	  "support polling of multiple sockets" in {
 		  val context: Context = xs.context
 		  val (pub, poller) = (context.socket(XS.PUB), context.poller)
 		  pub.bind("inproc://xs-spec")
@@ -150,7 +150,7 @@ class XSSpecJNI extends WordSpec with MustMatchers {
 	  	
 	  	sub.close
 	  	context.term
-	  }*/
+	  }
   	}
   	
   	def connectSubscriber(context: Context) = {

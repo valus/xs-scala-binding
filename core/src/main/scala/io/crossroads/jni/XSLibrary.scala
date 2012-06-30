@@ -134,9 +134,9 @@ object XSLibrary {
   @native
   def xs_getsockoptInt(socket: Long, option_name: Int, option_value: Int): Int
   @native
-  def xs_getsockoptLong(socket: Long, option_name: Int, option_value: Long): Int
+  def xs_getsockoptLong(socket: Long, option_name: Int, option_value: Long): Long
   @native
-  def xs_getsockoptByte(socket: Long, option_name: Int, option_value: Array[Byte]): Int
+  def xs_getsockoptByte(socket: Long, option_name: Int, option_value: Array[Byte]): Array[Byte]
   @native
   def xs_init(): Long
   //def xs_msg_init(msg: xs_msg_t): Int
@@ -175,7 +175,7 @@ object XSLibrary {
   @native
   def xs_term(context: Long): Int
   @native
-  def xs_version(major: Array[Int], minor: Array[Int], patch: Array[Int]): Unit
+  def xs_version(major: Array[Int], minor: Array[Int], patch: Array[Int]): Int
   @native
   def xs_stopwatch_start(): Long
   @native

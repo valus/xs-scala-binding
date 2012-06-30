@@ -1,6 +1,7 @@
 
 #include "io_crossroads_jni_XSLibrary__.h"
 #include <xs/xs.h>
+#include <stdint.h>
 
 
 /*
@@ -11,11 +12,10 @@
  
 JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1bind
   (JNIEnv *env, jobject obj, jlong socket, jstring address) {
-  
-  	void* socket_a = 0;
+    void* socket_a = 0;
     const char* address_a = 0;
     int result = 0;
-    
+      
     socket_a = (void*) socket;
     address_a = (*env)->GetStringUTFChars(env, address, NULL);
     result = xs_bind(socket_a, address_a);
@@ -76,8 +76,15 @@ JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1errno
  */
 JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1getsockoptInt
   (JNIEnv *env, jobject obj, jlong socket, jint option, jint value) {
-  
-      return 0;
+      void* socket_a = 0;
+      socket_a = (void*) socket;
+      size_t value_size = sizeof(value);
+      
+      int result = -1;
+      result = xs_getsockopt(socket_a, option, &value, &value_size);
+      if(result < 0)
+          return result;
+      return value;
 }
 
 /*
@@ -85,9 +92,18 @@ JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1getsockoptInt
  * Method:    xs_getsockoptLong
  * Signature: (JIJ)I
  */
-JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1getsockoptLong
+JNIEXPORT jlong JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1getsockoptLong
 (JNIEnv *env, jobject obj, jlong socket, jint option, jlong value) {
-    return 0;
+    
+    void* socket_a = 0;
+    socket_a = (void*) socket;
+    size_t value_size = sizeof(value);
+    
+    int result = -1;
+    result = xs_getsockopt(socket_a, option, &value, &value_size);
+    if(result < 0)
+        return result;
+    return value;
 }
 
 /*
@@ -95,9 +111,17 @@ JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1getsockoptLong
  * Method:    xs_getsockoptByte
  * Signature: (JI[B)I
  */
-JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1getsockoptByte
+JNIEXPORT jbyteArray JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1getsockoptByte
 (JNIEnv *env, jobject obj, jlong socket, jint option, jbyteArray value) {
-    return 0;
+    void* socket_a = 0;
+    socket_a = (void*) socket;
+    size_t value_size = sizeof(value);
+    
+    int result = -1;
+    result = xs_getsockopt(socket_a, option, &value, &value_size);
+    if(result < 0)
+        return result;
+    return value;
 }
 
 /*
@@ -108,7 +132,7 @@ JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1getsockoptByte
 JNIEXPORT jlong JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1init
   (JNIEnv *env, jobject obj) {
   
-   void* context = 0;
+    void* context = 0;
     
     context = xs_init();
     
@@ -160,7 +184,15 @@ JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1send
  */
 JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1setctxoptInt
 (JNIEnv *env, jobject obj, jlong context, jint option, jint value) {
-    return 0;
+    
+    void* context_a = 0;
+    context_a = (void*) context;
+    size_t value_size = sizeof(value);
+    
+    int result = -1;
+    result = xs_setctxopt(context_a, option, &value, value_size);
+    return result;
+    
 }
 
 /*
@@ -170,7 +202,13 @@ JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1setctxoptInt
  */
 JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1setctxoptLong
 (JNIEnv *env, jobject obj, jlong context, jint option, jlong value) {
-    return 0;
+    void* context_a = 0;
+    context_a = (void*) context;
+    size_t value_size = sizeof(value);
+    
+    int result = -1;
+    result = xs_setctxopt(context_a, option, &value, value_size);
+    return result;
 }
 
 /*
@@ -180,7 +218,13 @@ JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1setctxoptLong
  */
 JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1setctxoptByte
 (JNIEnv *env, jobject obj, jlong context, jint option, jbyteArray value) {
-    return 0;
+    void* context_a = 0;
+    context_a = (void*) context;
+    size_t value_size = sizeof(value);
+    
+    int result = -1;
+    result = xs_setctxopt(context_a, option, &value, &value_size);
+    return result;
 }
 
 /*
@@ -190,7 +234,14 @@ JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1setctxoptByte
  */
 JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1setsockoptInt
 (JNIEnv *env, jobject obj, jlong socket, jint option, jint value) {
-    return 0;
+    void* socket_a = 0;
+    socket_a = (void*) socket;
+    size_t value_size = sizeof(value);
+    
+    int result = -1;
+    result = xs_setsockopt(socket_a, option, &value, value_size);
+    return result;
+   
 }
 
 /*
@@ -200,7 +251,13 @@ JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1setsockoptInt
  */
 JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1setsockoptLong
 (JNIEnv *env, jobject obj, jlong socket, jint option, jlong value) {
-    return 0;
+    void* socket_a = 0;
+    socket_a = (void*) socket;
+    size_t value_size = sizeof(value);
+    
+    int result = -1;
+    result = xs_setsockopt(socket_a, option, &value, value_size);
+    return result;
 }
 
 /*
@@ -210,7 +267,13 @@ JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1setsockoptLong
  */
 JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1setsockoptByte
 (JNIEnv *env, jobject obj, jlong socket, jint option, jbyteArray value) {
-    return 0;
+    void* socket_a = 0;
+    socket_a = (void*) socket;
+    size_t value_size = sizeof(value);
+    
+    int result = -1;
+    result = xs_setsockopt(socket_a, option, &value, value_size);
+    return result;
 }
 
 /*
@@ -285,7 +348,7 @@ JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1term
  * Method:    xs_version
  * Signature: ([I[I[I)V
  */
-JNIEXPORT void JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1version
+JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1version
   (JNIEnv *env, jobject obj, jintArray major, jintArray minor, jintArray patch) {
   
     jclass cmaj = 0;
@@ -299,7 +362,6 @@ JNIEXPORT void JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1version
     int ipat = 0;
     
     cmaj = (*env)->GetObjectClass(env, major);
-
     fmaj = (*env)->GetFieldID(env, cmaj, "value", "I");
     cmin = (*env)->GetObjectClass(env, minor);
     fmin = (*env)->GetFieldID(env, cmin, "value", "I");

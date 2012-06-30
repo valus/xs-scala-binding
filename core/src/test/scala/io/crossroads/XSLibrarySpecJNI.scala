@@ -34,14 +34,13 @@ class CrossroadsIOLibrarySpecJNI extends WordSpec with MustMatchers with BeforeA
       endpoint = "inproc://xs-spec"
   	  
     }
-    /*"xs_setctxopt" in {
+    "xs_setctxopt" in {
     	val context = xs.xs_init
     	val (offset, sizeInBytes, optionValue) = (0, 4, 1)
-    	val value = new Memory(sizeInBytes) { setInt(offset, optionValue) }
-    	val (length, lengthRef) = (new NativeLong(sizeInBytes), new LongByReference(sizeInBytes))
-    	xs.xs_setctxopt(context, CrossroadsIO.XS_MAX_SOCKETS, value, length) must equal(0)
+    	
+    	xs.xs_setctxoptInt(context, XSLibrary.XS_MAX_SOCKETS, optionValue) must equal(0)
     	xs.xs_term(context)
-    }*/
+    }
     "xs_bind" in {
       val context = xs.xs_init
       val socket = xs.xs_socket(context, XSLibrary.XS_PUB)
@@ -64,22 +63,22 @@ class CrossroadsIOLibrarySpecJNI extends WordSpec with MustMatchers with BeforeA
       xs.xs_close(pub)
       xs.xs_term(context)
     }
-    /*"xs_(get|set)sockopt" in {
+    "xs_(get|set)sockopt" in {
       val context = xs.xs_init
       val socket = xs.xs_socket(context, XSLibrary.XS_PUB)
       val (offset, sizeInBytes, optionValue) = (0, 4, 1234)
-      val value = new Memory(sizeInBytes) { setInt(offset, optionValue) }
-      val (length, lengthRef) = (new NativeLong(sizeInBytes), new LongByReference(sizeInBytes))
-      xs.xs_setsockopt(socket, XSLibrary.XS_SNDHWM, value, length) must equal(0)
-      xs.xs_getsockopt(socket, XSLibrary.XS_SNDHWM, value, lengthRef) must equal(0)
-      value.getInt(offset) must equal(optionValue)
+      
+      xs.xs_setsockoptInt(socket, XSLibrary.XS_SNDHWM, optionValue) must equal(0)
+      xs.xs_getsockoptInt(socket, XSLibrary.XS_SNDHWM, 0) must equal(1234)
+      
       xs.xs_close(socket)
       xs.xs_term(context)
-    }*/
+    }
     "xs_init" in { 
       val context = xs.xs_init
-      context must not be (null)
-      xs.xs_term(context)
+      context must not be (0)
+      xs.xs_term(context) must be (0)
+      
     }
     /*"xs_msg_close" in {
       val msg = new xs_msg_t
@@ -164,9 +163,9 @@ class CrossroadsIOLibrarySpecJNI extends WordSpec with MustMatchers with BeforeA
     "xs_socket" in { 
       val context = xs.xs_init
       val socket = xs.xs_socket(context, XSLibrary.XS_PUB)
-      socket must not be (null)
-      xs.xs_close(socket)
-      xs.xs_term(context)
+      socket must not be (0)
+      xs.xs_close(socket) must equal(0)
+      xs.xs_term(context) must equal(0)
     }
     "xs_strerror" in { 
       xs.xs_init
@@ -175,24 +174,19 @@ class CrossroadsIOLibrarySpecJNI extends WordSpec with MustMatchers with BeforeA
     "xs_term" in { 
       val context = xs.xs_init
       xs.xs_term(context) must equal(0)
-      xs.xs_term(context)
     }
-    "xs_version" in {
+    /*"xs_version" in {
       val (major_x, minor_x, patch_x) = (Array(1), Array(1), Array(1))
-      val (major_y, minor_y, patch_y) = (Array(1), Array(1), Array(1))
-      xs.xs_version(major_x, minor_x, patch_x)
-      xs.xs_version(major_y, minor_y, patch_y)
-      (major_x(0), minor_x(0), patch_x(0)) must equal(major_y(0), minor_y(0), patch_y(0))
-    }
-    /*"socket options: XS_RCVHWM" in {
+      val result = xs.xs_version(major_x, minor_x, patch_x)
+      result must not be (0)
+    }*/
+    "socket options: XS_RCVHWM" in {
       val context = xs.xs_init
       val socket = xs.xs_socket(context, XSLibrary.XS_PUB)
       val (offset, sizeInBytes, optionValue) = (0, 4, 1234)
-      val value = new Memory(sizeInBytes) { setInt(offset, optionValue) }
-      val (length, lengthRef) = (new NativeLong(sizeInBytes), new LongByReference(sizeInBytes))
-      xs.xs_setsockopt(socket, XSLibrary.XS_RCVHWM, value, length) must equal(0)
-      xs.xs_getsockopt(socket, XSLibrary.XS_RCVHWM, value, lengthRef) must equal(0)
-      value.getInt(offset) must equal(optionValue)
+      xs.xs_setsockoptInt(socket, XSLibrary.XS_RCVHWM, optionValue) must equal(0)
+      xs.xs_getsockoptInt(socket, XSLibrary.XS_RCVHWM, 0) must equal(1234)
+      
       xs.xs_close(socket)
       xs.xs_term(context)
     }
@@ -200,23 +194,17 @@ class CrossroadsIOLibrarySpecJNI extends WordSpec with MustMatchers with BeforeA
       val context = xs.xs_init
       val socket = xs.xs_socket(context, XSLibrary.XS_PUB)
       val (offset, sizeInBytes, optionValue) = (0, 4, 1234)
-      val value = new Memory(sizeInBytes) { setInt(offset, optionValue) }
-      val (length, lengthRef) = (new NativeLong(sizeInBytes), new LongByReference(sizeInBytes))
-      xs.xs_setsockopt(socket, XSLibrary.XS_LINGER, value, length) must equal(0)
-      xs.xs_getsockopt(socket, XSLibrary.XS_LINGER, value, lengthRef) must equal(0)
-      value.getInt(offset) must equal(optionValue)
+      xs.xs_setsockoptInt(socket, XSLibrary.XS_LINGER, optionValue) must equal(0)
+      xs.xs_getsockoptInt(socket, XSLibrary.XS_LINGER, 0) must equal(1234)
       xs.xs_close(socket)
       xs.xs_term(context)
     }
     "socket options: XS_RECONNECT_IVL" in {
       val context = xs.xs_init
-      val socket = xs.xs_socket(context, CrossroadsIO.XS_PUB)
+      val socket = xs.xs_socket(context, XSLibrary.XS_PUB)
       val (offset, sizeInBytes, optionValue) = (0, 4, 1234)
-      val value = new Memory(sizeInBytes) { setInt(offset, optionValue) }
-      val (length, lengthRef) = (new NativeLong(sizeInBytes), new LongByReference(sizeInBytes))
-      xs.xs_setsockopt(socket, XSLibrary.XS_RECONNECT_IVL, value, length) must equal(0)
-      xs.xs_getsockopt(socket, XSLibrary.XS_RECONNECT_IVL, value, lengthRef) must equal(0)
-      value.getInt(offset) must equal(optionValue)
+      xs.xs_setsockoptInt(socket, XSLibrary.XS_RECONNECT_IVL, optionValue) must equal(0)
+      xs.xs_getsockoptInt(socket, XSLibrary.XS_RECONNECT_IVL, 0) must equal(1234)
       xs.xs_close(socket)
       xs.xs_term(context)
     }
@@ -224,11 +212,8 @@ class CrossroadsIOLibrarySpecJNI extends WordSpec with MustMatchers with BeforeA
       val context = xs.xs_init
       val socket = xs.xs_socket(context, XSLibrary.XS_PUB)
       val (offset, sizeInBytes, optionValue) = (0, 4, 1234)
-      val value = new Memory(sizeInBytes) { setInt(offset, optionValue) }
-      val (length, lengthRef) = (new NativeLong(sizeInBytes), new LongByReference(sizeInBytes))
-      xs.xs_setsockopt(socket, XSLibrary.XS_BACKLOG, value, length) must equal(0)
-      xs.xs_getsockopt(socket, XSLibrary.XS_BACKLOG, value, lengthRef) must equal(0)
-      value.getInt(offset) must equal(optionValue)
+      xs.xs_setsockoptInt(socket, XSLibrary.XS_BACKLOG, optionValue) must equal(0)
+      xs.xs_getsockoptInt(socket, XSLibrary.XS_BACKLOG, 0) must equal(1234)
       xs.xs_close(socket)
       xs.xs_term(context)
     }
@@ -236,11 +221,8 @@ class CrossroadsIOLibrarySpecJNI extends WordSpec with MustMatchers with BeforeA
       val context = xs.xs_init
       val socket = xs.xs_socket(context, XSLibrary.XS_PUB)
       val (offset, sizeInBytes, optionValue) = (0, 4, 1234)
-      val value = new Memory(sizeInBytes) { setInt(offset, optionValue) }
-      val (length, lengthRef) = (new NativeLong(sizeInBytes), new LongByReference(sizeInBytes))
-      xs.xs_setsockopt(socket, XSLibrary.XS_RECONNECT_IVL_MAX, value, length) must equal(0)
-      xs.xs_getsockopt(socket, XSLibrary.XS_RECONNECT_IVL_MAX, value, lengthRef) must equal(0)
-      value.getInt(offset) must equal(optionValue)
+      xs.xs_setsockoptInt(socket, XSLibrary.XS_RECONNECT_IVL_MAX, optionValue) must equal(0)
+      xs.xs_getsockoptInt(socket, XSLibrary.XS_RECONNECT_IVL_MAX, 0) must equal(1234)
       xs.xs_close(socket)
       xs.xs_term(context)
     }
@@ -248,11 +230,8 @@ class CrossroadsIOLibrarySpecJNI extends WordSpec with MustMatchers with BeforeA
       val context = xs.xs_init
       val socket = xs.xs_socket(context, XSLibrary.XS_PUB)
       val (offset, sizeInBytes, optionValue) = (0, 4, 1234)
-      val value = new Memory(sizeInBytes) { setInt(offset, optionValue) }
-      val (length, lengthRef) = (new NativeLong(sizeInBytes), new LongByReference(sizeInBytes))
-      xs.xs_setsockopt(socket, XSLibrary.XS_RCVTIMEO, value, length) must equal(0)
-      xs.xs_getsockopt(socket, XSLibrary.XS_RCVTIMEO, value, lengthRef) must equal(0)
-      value.getInt(offset) must equal(optionValue)
+      xs.xs_setsockoptInt(socket, XSLibrary.XS_RCVTIMEO, optionValue) must equal(0)
+      xs.xs_getsockoptInt(socket, XSLibrary.XS_RCVTIMEO, 0) must equal(1234)
       xs.xs_close(socket)
       xs.xs_term(context)
     }
@@ -260,11 +239,8 @@ class CrossroadsIOLibrarySpecJNI extends WordSpec with MustMatchers with BeforeA
       val context = xs.xs_init
       val socket = xs.xs_socket(context, XSLibrary.XS_PUB)
       val (offset, sizeInBytes, optionValue) = (0, 4, 0)
-      val value = new Memory(sizeInBytes) { setInt(offset, optionValue) }
-      val (length, lengthRef) = (new NativeLong(sizeInBytes), new LongByReference(sizeInBytes))
-      xs.xs_setsockopt(socket, XSLibrary.XS_IPV4ONLY, value, length) must equal(0)
-      xs.xs_getsockopt(socket, XSLibrary.XS_IPV4ONLY, value, lengthRef) must equal(0)
-      value.getInt(offset) must equal(optionValue)
+      xs.xs_setsockoptInt(socket, XSLibrary.XS_IPV4ONLY, optionValue) must equal(0)
+      xs.xs_getsockoptInt(socket, XSLibrary.XS_IPV4ONLY, 0) must equal(0)
       xs.xs_close(socket)
       xs.xs_term(context)
     }
@@ -272,11 +248,8 @@ class CrossroadsIOLibrarySpecJNI extends WordSpec with MustMatchers with BeforeA
       val context = xs.xs_init
       val socket = xs.xs_socket(context, XSLibrary.XS_PUB)
       val (offset, sizeInBytes, optionValue) = (0, 4, 1)
-      val value = new Memory(sizeInBytes) { setInt(offset, optionValue) }
-      val (length, lengthRef) = (new NativeLong(sizeInBytes), new LongByReference(sizeInBytes))
-      xs.xs_setsockopt(socket, XSLibrary.XS_KEEPALIVE, value, length) must equal(0)
-      xs.xs_getsockopt(socket, XSLibrary.XS_KEEPALIVE, value, lengthRef) must equal(0)
-      value.getInt(offset) must equal(optionValue)
+      xs.xs_setsockoptInt(socket, XSLibrary.XS_KEEPALIVE, optionValue) must equal(0)
+      xs.xs_getsockoptInt(socket, XSLibrary.XS_KEEPALIVE, 0) must equal(1)
       xs.xs_close(socket)
       xs.xs_term(context)
     }
@@ -284,14 +257,11 @@ class CrossroadsIOLibrarySpecJNI extends WordSpec with MustMatchers with BeforeA
       val context = xs.xs_init
       val socket = xs.xs_socket(context, XSLibrary.XS_SURVEYOR)
       val (offset, sizeInBytes, optionValue) = (0, 4, 1)
-      val value = new Memory(sizeInBytes) { setInt(offset, optionValue) }
-      val (length, lengthRef) = (new NativeLong(sizeInBytes), new LongByReference(sizeInBytes))
-      xs.xs_setsockopt(socket, XSLibrary.XS_SURVEY_TIMEOUT, value, length) must equal(0)
-      xs.xs_getsockopt(socket, XSLibrary.XS_SURVEY_TIMEOUT, value, lengthRef) must equal(0)
-      value.getInt(offset) must equal(optionValue)
+      xs.xs_setsockoptInt(socket, XSLibrary.XS_SURVEY_TIMEOUT, optionValue) must equal(0)
+      xs.xs_getsockoptInt(socket, XSLibrary.XS_SURVEY_TIMEOUT, 0) must equal(1)
       xs.xs_close(socket)
       xs.xs_term(context)
-    }*/
+    }
   }
   def randomPort = 1024 + new Random(System.currentTimeMillis).nextInt(4096)
   lazy val dataBytes = "hello world".getBytes

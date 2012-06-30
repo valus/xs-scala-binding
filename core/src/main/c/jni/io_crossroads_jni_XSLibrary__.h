@@ -52,7 +52,7 @@ JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1getsockoptInt
  * Method:    xs_getsockoptLong
  * Signature: (JIJ)I
  */
-JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1getsockoptLong
+JNIEXPORT jlong JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1getsockoptLong
   (JNIEnv *, jobject, jlong, jint, jlong);
 
 /*
@@ -60,7 +60,7 @@ JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1getsockoptLong
  * Method:    xs_getsockoptByte
  * Signature: (JI[B)I
  */
-JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1getsockoptByte
+JNIEXPORT jbyteArray JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1getsockoptByte
   (JNIEnv *, jobject, jlong, jint, jbyteArray);
 
 /*
@@ -172,7 +172,7 @@ JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1term
  * Method:    xs_version
  * Signature: ([I[I[I)V
  */
-JNIEXPORT void JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1version
+JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1version
   (JNIEnv *, jobject, jintArray, jintArray, jintArray);
 
 /*
