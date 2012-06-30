@@ -2,9 +2,12 @@ Scala Binding for Crossroads I/O
 ================================
 <i>(Fork of Scala binding for 0MQ; [zeromq-scala-binding][zeromq-scala])</i>
 
-The Scala binding for [Crossroads I/O][xs] is based on libxs versions 1.2.0 and uses JNA for accessing native functions. 
+The Scala binding for [Crossroads I/O][xs] is based on libxs versions 1.2.0 and uses [JNA][jna] and [JNI][jni]. 
 The Scala binding is a thin wrapper of the Crossroads I/O API.
 
+#### NOTE:
+* Binding based on JNA is fully supports all functionalities of libxs 1.2.0.
+* Binding based on JNI is under development and it doesn't have all functionalities of libx 1.2.0 implemented.
 
 ## Installation and usage.
 
@@ -186,3 +189,5 @@ This project is released under the [LGPL][lgpl] license, as is the native libxs 
 [xs-license]: http://www.crossroads.io/dev:legal
 [issues]: https://github.com/valus/xs-scala-binding/issues
 [lgpl]: http://www.gnu.org/licenses/lgpl.html
+[jna]: http://en.wikipedia.org/wiki/Java_Native_Access
+[jni]: http://en.wikipedia.org/wiki/Java_Native_Interface
