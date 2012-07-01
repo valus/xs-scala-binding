@@ -191,6 +191,14 @@ JNIEXPORT jlong JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1stopwatch_1st
 JNIEXPORT jlong JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1stopwatch_1stop
   (JNIEnv *, jobject, jlong);
 
+    /*
+     * Class:     io_crossroads_jni_XSLibrary__
+     * Method:    xs_poll
+     * Signature: ([Lio/crossroads/jni/xs_pollitem_t;II)I
+     */
+JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1poll
+    (JNIEnv *, jobject, jobjectArray, jint, jint);
+    
 #ifdef __cplusplus
 }
 #endif

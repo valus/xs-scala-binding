@@ -445,7 +445,7 @@ object XS {
 
     def getNext(): Int = nextEventIndex
 
-    /*def poll(): Long = {
+    def poll(): Long = {
       var timeout = -1;
       if (this.timeout != UNINITIALIZED_TIMEOUT) {
         timeout = this.timeout;
@@ -480,9 +480,11 @@ object XS {
         return 0
       pollItemCount = 0;
       val result = XSLibrary.xs_poll(items, curEventCount, timeout);
+      
       if(result < 0)
       	raiseXSException();
       socketIndex = 0
+      
       while (socketIndex < sockets.length) {
       	if (sockets(socketIndex) != null) {
           revents(socketIndex) = items(pollItemCount).revents;
@@ -491,7 +493,7 @@ object XS {
         socketIndex +=1
       }
       result
-    }*/
+    }
 
     def pollin(index: Int): Boolean = poll_mask(index, POLLIN)
 

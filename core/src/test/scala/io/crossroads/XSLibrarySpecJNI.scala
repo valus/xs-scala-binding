@@ -20,8 +20,6 @@ import org.scalatest.BeforeAndAfter
 import org.scalatest.WordSpec
 import org.scalatest.matchers.MustMatchers
 import scala.util.Random
-import com.sun.jna._
-import com.sun.jna.ptr._
 import io.crossroads.jni._
 import io.crossroads.jni.XSLibrary
 
@@ -128,30 +126,27 @@ class CrossroadsIOLibrarySpecJNI extends WordSpec with MustMatchers with BeforeA
       xs.xs_msg_init_size(msg, new NativeLong(dataBytes.length))
       xs.xs_msg_size(msg) must equal(dataBytes.length)
       xs.xs_msg_close(msg)
-    }
-    "xs_(poll|sendmsg|recvmsg)" in { 
+    }*/
+    "xs_(poll)" in { 
       val context = xs.xs_init
-      val (pub, sub) = (xs.xs_socket(context, XSLibrary.XS_PUB), xs.xs_socket(context, XSLibrary.XS_SUB))
-      xs.xs_bind(pub, endpoint)
-      xs.xs_connect(sub, endpoint)
-      xs.xs_setsockopt(sub, XSLibrary.XS_SUBSCRIBE, Pointer.NULL, new NativeLong(0))
-      val (outgoingMsg, incomingMsg) = (new xs_msg_t, new xs_msg_t)
-      xs.xs_msg_init_data(outgoingMsg, dataMemory, new NativeLong(dataBytes.length), null, null)
-      xs.xs_msg_init(incomingMsg)
-      xs.xs_recvmsg(sub, incomingMsg, XSLibrary.XS_DONTWAIT) must equal(-1)
-      xs.xs_errno must equal(XSLibrary.EAGAIN)
-      xs.xs_sendmsg(pub, outgoingMsg, 0) must equal(11)
-      val items = new xs_pollitem_t().toArray(1).asInstanceOf[Array[xs_pollitem_t]]
+      val (push, pull) = (xs.xs_socket(context, XSLibrary.XS_PUSH), xs.xs_socket(context, XSLibrary.XS_PULL))
+      xs.xs_bind(push, endpoint)
+      xs.xs_connect(pull, endpoint)
+      
+      val testMsg = "outgoingMsg"
+    
+      xs.xs_send(push, testMsg.getBytes, testMsg.getBytes.length, 0) must equal(testMsg.getBytes.length)
+      val items = new Array[xs_pollitem_t](1)
       items(0) = new xs_pollitem_t
-      items(0).socket = sub
+      items(0).socket = pull
       items(0).events = XSLibrary.XS_POLLIN
       xs.xs_poll(items, 1, -1) must equal(1)
-      xs.xs_recvmsg(sub, incomingMsg, 0) must equal(11)
-      xs.xs_msg_close(outgoingMsg)
-      xs.xs_close(sub)
-      xs.xs_close(pub)
+      new String(XSLibrary.xs_recv(pull, testMsg.getBytes, testMsg.getBytes.length, 0)) must equal(testMsg)
+      
+      xs.xs_close(push)
+      xs.xs_close(pull)
       xs.xs_term(context)
-    }*/
+    }
     "xs_shutdown" in {
       val context = xs.xs_init
       val socket = xs.xs_socket(context, XSLibrary.XS_PUB)
@@ -265,5 +260,19 @@ class CrossroadsIOLibrarySpecJNI extends WordSpec with MustMatchers with BeforeA
   }
   def randomPort = 1024 + new Random(System.currentTimeMillis).nextInt(4096)
   lazy val dataBytes = "hello world".getBytes
-  lazy val dataMemory = new Memory(dataBytes.length) { write(0, dataBytes, 0, dataBytes.length) }
+}
+
+class Task(sub: Long, testMsg: String) extends Runnable {
+	
+	def run(): Unit = {
+		Thread.sleep(500)
+		System.out.println(new String(XSLibrary.xs_recv(sub, testMsg.getBytes, testMsg.getBytes.length, 0)))
+	}
+}
+
+class Task2(items: Array[xs_pollitem_t]) extends Runnable {
+	
+	def run(): Unit = {
+		XSLibrary.xs_poll(items, 1, -1)
+	}
 }

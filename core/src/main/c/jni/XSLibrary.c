@@ -406,6 +406,54 @@ JNIEXPORT jlong JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1stopwatch_1st
     return result;
   }
 
+/*
+ * Class:     io_crossroads_jni_XSLibrary__
+ * Method:    xs_poll
+ * Signature: ([Lio/crossroads/jni/xs_pollitem_t;II)I
+ */
+JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1poll
+(JNIEnv * env, jobject obj, jobjectArray items, jint nitems, jint timeout) {
+    
+    xs_pollitem_t* poll_items = malloc(sizeof(xs_pollitem_t) * nitems);
+    
+    int i = 0;
+    
+    for (i = 0; i < nitems; i++) {
+        jobject item_temp = (*env)->GetObjectArrayElement(env, items, i);
+        
+        jclass class = (*env)->GetObjectClass(env, item_temp);
+        jfieldID socketId = (*env)->GetFieldID(env, class, "socket", "J");
+        jfieldID fdId = (*env)->GetFieldID(env, class, "fd", "I");
+        jfieldID eventsId = (*env)->GetFieldID(env, class, "events", "S");
+        jfieldID reventsId = (*env)->GetFieldID(env, class, "revents", "S");
+        
+        poll_items [i].socket = (*env)->GetLongField(env, item_temp, socketId);
+        poll_items [i].fd = (*env)->GetIntField(env, item_temp, fdId);
+        poll_items [i].events = (*env)->GetShortField(env, item_temp, eventsId);
+        poll_items [i].revents = (*env)->GetShortField(env, item_temp, reventsId);
+    }
+    
+    int result = 0;
+    
+    result = xs_poll(poll_items, nitems, timeout);
+    for (i = 0; i < nitems; i++) {
+        jobject item_temp = (*env)->GetObjectArrayElement(env, items, i);
+        
+        jclass class = (*env)->GetObjectClass(env, item_temp);
+        jfieldID socketId = (*env)->GetFieldID(env, class, "socket", "J");
+        jfieldID fdId = (*env)->GetFieldID(env, class, "fd", "I");
+        jfieldID eventsId = (*env)->GetFieldID(env, class, "events", "S");
+        jfieldID reventsId = (*env)->GetFieldID(env, class, "revents", "S");
+        (*env)->SetShortField(env, item_temp, reventsId, poll_items[i].revents);
+         (*env)->SetShortField(env, item_temp, socketId, poll_items[i].socket);
+         (*env)->SetShortField(env, item_temp, fdId, poll_items[i].fd);
+         (*env)->SetShortField(env, item_temp, eventsId, poll_items[i].events);
+    }
+    
+    free(poll_items);
+    return result;
+}
+
 #ifdef __cplusplus
 }
 #endif

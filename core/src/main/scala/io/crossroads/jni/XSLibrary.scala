@@ -147,7 +147,8 @@ object XSLibrary {
   //def xs_msg_init_size(msg: xs_msg_t, size: NativeLong): Int
   //def xs_msg_move(dest: xs_msg_t, src: xs_msg_t): Int
   //def xs_msg_size(msg: xs_msg_t): Int
-  //def xs_poll(items: Array[xs_pollitem_t], nitems: Int, timeout: Int): Int
+  @native
+  def xs_poll(items: Array[xs_pollitem_t], nitems: Int, timeout: Int): Int
   //def xs_recvmsg(socket: Pointer, msg: xs_msg_t, flags: Int): Int
   @native
   def xs_recv(socket: Long, buf: Array[Byte], len: Int, flags: Int): Array[Byte]
