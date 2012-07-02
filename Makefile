@@ -1,6 +1,6 @@
 
 OBJDIR = target/obj
-SODIR = target/so
+SODIR = core/src/main/resources/
 SRCDIR = core/src/main/c/jni
 CC = gcc -std=gnu99
 CCDEPMODE = depmode=gcc3

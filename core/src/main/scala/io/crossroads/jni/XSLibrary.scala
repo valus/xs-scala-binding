@@ -19,16 +19,12 @@ package io.crossroads.jni
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import java.net.URL;
 
 object XSLibrary {
-
-  //val libname = System.getProperty("XSLibrary")
-  //if (libname ne null) {
-  System.load("/Users/valus/workspace/xs-scala-binding/target/so/XSLibrary.so")
-  /*} else {
-	  println("2. java.library.path: " + System.getProperty("java.library.path"))
-	  System.loadLibrary("XSLibrary")
-  }*/
+	
+	val location: URL =  this.getClass().getResource("/XSLibrary.so")
+  	System.load(location.getPath)
   
   /** Native Crossroads errors codes */
   val XS_HAUSNUMERO = 156384712

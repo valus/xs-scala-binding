@@ -19,9 +19,12 @@
 import sbt._
 import Keys._
 import Dependencies._
+import sbt.classpath.ClasspathUtilities
+import sbt.Project.Initialize
+import java.io.File
 
 object BuildDef extends Build {
-  	
+  
   lazy val root = Project("xs-scala-binding-parent", file("."))
 		  .settings(description:= "Parent for Crossroads I/O Scala binding project", 
 			publishArtifact := false) aggregate(core, demos)
