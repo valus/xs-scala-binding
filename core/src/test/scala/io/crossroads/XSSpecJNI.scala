@@ -15,8 +15,7 @@ class XSSpecJNI extends WordSpec with MustMatchers {
 		  sub.close 
 		  context.term
 	  }
-	 /*"support pub-sub connection pattern" in {
-		 System.out.println("pub-sub testing...")
+	 "support pub-sub connection pattern" in {
 		  val context = XS.context
 		  val (pub, sub, poller) = (
 		  	context.socket(XS.PUB), 
@@ -27,11 +26,9 @@ class XSSpecJNI extends WordSpec with MustMatchers {
 		  sub.connect("inproc://xs-spec")
 		  sub.subscribe(Array.empty)
 		  poller.register(sub)
-		  System.out.println("Sending....")
 		  pub.send(outgoingMessage.getBytes, outgoingMessage.getBytes.length, 0)
-		  System.out.println("pollerr poll")
-		  poller.poll(0) //must equal(1)
-		  poller.pollin(0) //must equal(true)
+		  poller.poll(0) must equal(1)
+		  poller.pollin(0) must equal(true)
 		  
 		  val incomingMessage = sub.recv(outgoingMessage.getBytes.length, 0)
 		  incomingMessage must equal(outgoingMessage.getBytes)
@@ -123,7 +120,7 @@ class XSSpecJNI extends WordSpec with MustMatchers {
 	  	context.term
 	  }
 	  "support polling of multiple sockets" in {
-		  val context: Context = xs.context
+		  val context: Context = XS.context
 		  val (pub, poller) = (context.socket(XS.PUB), context.poller)
 		  pub.bind("inproc://xs-spec")
 		  val (sub_x, sub_y) = (connectSubscriber(context), connectSubscriber(context))
@@ -137,7 +134,7 @@ class XSSpecJNI extends WordSpec with MustMatchers {
 		  sub_y.close
 		  pub.close
 		  context.term
-	  }*/
+	  }
 	  "support sending of zero-length messages" in {
 		  val context = XS.context
 		  val pub = context.socket(XS.PUB)

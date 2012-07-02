@@ -614,15 +614,16 @@ public class XS {
       if (pollItemCount != curEventCount)
         return 0;
       pollItemCount = 0;
+     
       int result = xs.xs_poll(items, curEventCount, timeout);
       if(result < 0)
       	raiseXSException();
       for (int socketIndex = 0; socketIndex < sockets.length; socketIndex++) {
-        if (sockets[socketIndex] == null) {
+    	if (sockets[socketIndex] == null) {
           continue;
         }
-        revents[socketIndex] = items[pollItemCount].revents;
-        pollItemCount++;
+    	revents[socketIndex] = items[pollItemCount].revents;
+    	pollItemCount++;
       }
       return result;
     }

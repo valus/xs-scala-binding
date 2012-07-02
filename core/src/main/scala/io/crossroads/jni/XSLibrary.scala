@@ -130,7 +130,8 @@ object XSLibrary {
   def xs_connect(socket: Long, endpoint: String): Int
   @native
   def xs_errno(): Int
-  //def xs_getmsgopt(message: xs_msg_t, option_name: Int, option_value: Pointer): Int
+  @native
+  def xs_getmsgopt(message: xs_msg_t, option_name: Int, option_value: Long): Int
   @native
   def xs_getsockoptInt(socket: Long, option_name: Int, option_value: Int): Int
   @native
@@ -139,14 +140,22 @@ object XSLibrary {
   def xs_getsockoptByte(socket: Long, option_name: Int, option_value: Array[Byte]): Array[Byte]
   @native
   def xs_init(): Long
-  //def xs_msg_init(msg: xs_msg_t): Int
-  //def xs_msg_close(msg: xs_msg_t): Int
-  //def xs_msg_copy(dest: xs_msg_t, src: xs_msg_t): Int
-  //def xs_msg_data(msg: xs_msg_t): Pointer
-  //def xs_msg_init_data(msg: xs_msg_t, data: Pointer, size: NativeLong, ffn: xs_free_fn, hint: Pointer): Int
-  //def xs_msg_init_size(msg: xs_msg_t, size: NativeLong): Int
-  //def xs_msg_move(dest: xs_msg_t, src: xs_msg_t): Int
-  //def xs_msg_size(msg: xs_msg_t): Int
+  @native
+  def xs_msg_init(msg: xs_msg_t): Int
+  @native
+  def xs_msg_close(msg: xs_msg_t): Int
+  @native
+  def xs_msg_copy(dest: xs_msg_t, src: xs_msg_t): Int
+  @native
+  def xs_msg_data(msg: xs_msg_t): Long
+  @native
+  def xs_msg_init_data(msg: xs_msg_t, data: Long, ffn: xs_free_fn, hint: Long): Int
+  @native
+  def xs_msg_init_size(msg: xs_msg_t, size: Long): Int
+  @native
+  def xs_msg_move(dest: xs_msg_t, src: xs_msg_t): Int
+  @native
+  def xs_msg_size(msg: xs_msg_t): Int
   @native
   def xs_poll(items: Array[xs_pollitem_t], nitems: Int, timeout: Int): Int
   //def xs_recvmsg(socket: Pointer, msg: xs_msg_t, flags: Int): Int

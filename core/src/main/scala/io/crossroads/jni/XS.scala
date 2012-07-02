@@ -400,8 +400,8 @@ object XS {
           revents = Arrays.copyOf(revents, newMaxEventCount)
           maxEventCount = newMaxEventCount
         }
-        nextEventIndex +=1
         pos = nextEventIndex
+        nextEventIndex +=1
       }
       sockets(pos) = socket
       events(pos) = numEvents.toShort
@@ -487,8 +487,8 @@ object XS {
       
       while (socketIndex < sockets.length) {
       	if (sockets(socketIndex) != null) {
-          revents(socketIndex) = items(pollItemCount).revents;
-          pollItemCount += 1
+      	  revents(socketIndex) = items(pollItemCount).revents;
+      	  pollItemCount += 1
         }
         socketIndex +=1
       }

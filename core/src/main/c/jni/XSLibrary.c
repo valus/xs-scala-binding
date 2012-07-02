@@ -269,7 +269,8 @@ JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1setsockoptByte
 (JNIEnv *env, jobject obj, jlong socket, jint option, jbyteArray value) {
     void* socket_a = 0;
     socket_a = (void*) socket;
-    size_t value_size = sizeof(value);
+    //size_t value_size = sizeof(value);
+    int value_size = (*env)->GetArrayLength(env, value);
     
     int result = -1;
     result = xs_setsockopt(socket_a, option, &value, value_size);
@@ -445,9 +446,9 @@ JNIEXPORT jint JNICALL Java_io_crossroads_jni_XSLibrary_00024_xs_1poll
         jfieldID eventsId = (*env)->GetFieldID(env, class, "events", "S");
         jfieldID reventsId = (*env)->GetFieldID(env, class, "revents", "S");
         (*env)->SetShortField(env, item_temp, reventsId, poll_items[i].revents);
-         (*env)->SetShortField(env, item_temp, socketId, poll_items[i].socket);
-         (*env)->SetShortField(env, item_temp, fdId, poll_items[i].fd);
-         (*env)->SetShortField(env, item_temp, eventsId, poll_items[i].events);
+        // (*env)->SetShortField(env, item_temp, socketId, poll_items[i].socket);
+        // (*env)->SetShortField(env, item_temp, fdId, poll_items[i].fd);
+        // (*env)->SetShortField(env, item_temp, eventsId, poll_items[i].events);
     }
     
     free(poll_items);
