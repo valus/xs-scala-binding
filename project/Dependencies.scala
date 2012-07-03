@@ -27,5 +27,5 @@ object Dependencies {
   lazy val jna          = "net.java.dev.jna"	% "jna"      		% "3.4.0"
   lazy val jnr			= "com.github.jnr"      % "jnr-constants" 	% "0.8.2"
   lazy val scalatest    = "org.scalatest"       %% "scalatest" 		% "1.6.1"	% "test"
-  
+  lazy val commonsIO		= "commons-io" % "commons-io" % "2.3"
 }

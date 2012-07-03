@@ -27,6 +27,7 @@ object BuildDef extends Build {
   
   lazy val root = Project("xs-scala-binding-parent", file("."))
 		  .settings(description:= "Parent for Crossroads I/O Scala binding project", 
+		  		crossPaths := false,
 			publishArtifact := false) aggregate(core, demos)
 
   // Core Project  
@@ -40,9 +41,11 @@ object BuildDef extends Build {
     		homepage := Some(url("https://github.com/valus/xs-scala-binding")),
     		licenses += ("GNU LESSER GENERAL PUBLIC LICENSE Version 3", url("http://www.gnu.org/copyleft/lesser.html")),
     		startYear := Some(2012),
-    		libraryDependencies ++= Seq(jna, jnr, scalatest),
+    		libraryDependencies ++= Seq(jna, jnr, scalatest, commonsIO),
     		pomIncludeRepository  := { _ => false },
+    		crossPaths := false,
     		publishMavenStyle := true,
+    		resolvers += "Maven Repo 1" at "http://repo1.maven.org/maven2",
     		publishArtifact in Test := false,
   			publishTo <<= version { v: String =>
   				val nexus = "https://oss.sonatype.org/"
@@ -63,6 +66,7 @@ object BuildDef extends Build {
     		name:="xs-scala-binding-demos",
     		organizationName:= "Scalaric",
     		version := "1.0.2-SNAPSHOT",
+    		crossPaths := false,
     		homepage := Some(url("https://github.com/valus/xs-scala-binding")),
     		licenses += ("GNU LESSER GENERAL PUBLIC LICENSE Version 3", url("http://www.gnu.org/copyleft/lesser.html")),
     		startYear := Some(2012),
@@ -76,6 +80,7 @@ object BuildDef extends Build {
 			name:="sx-scala-binding-performance",
 			organizationName:= "Scalaric",
 			version:= "1.0.2-SNAPSHOT",
+			crossPaths := false,
 			homepage := Some(url("https://github.com/valus/xs-scala-binding")),
     		licenses += ("GNU LESSER GENERAL PUBLIC LICENSE Version 3", url("http://www.gnu.org/copyleft/lesser.html")),
     		startYear := Some(2012),

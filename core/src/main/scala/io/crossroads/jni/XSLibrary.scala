@@ -19,13 +19,15 @@ package io.crossroads.jni
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import java.net.URL;
+import java.net.URL
 
 object XSLibrary {
 	
-	val location: URL =  this.getClass().getResource("/XSLibrary.so")
-  	System.load(location.getPath)
+	//val location: URL =  this.getClass().getResource("/XSLibrary.so")
+  	//System.loadLibrary(location.getPath)
   
+  Library.load
+	
   /** Native Crossroads errors codes */
   val XS_HAUSNUMERO = 156384712
   val EFSM = XS_HAUSNUMERO + 51

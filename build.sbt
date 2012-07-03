@@ -14,8 +14,8 @@ startYear             := Some(2012)
 
 organizationName      := "Scalaric"
 
-crossScalaVersions    := Seq("2.9.2", "2.9.1-1", "2.9.1")
-  
+crossPaths := false
+
 // call make -f Makefile.native clean
 clean <<= (clean, resourceManaged in Compile, sourceDirectory, classDirectory in Compile,
       managedClasspath in Compile) map { (clean, dir, src, classDir, runPath) => {
