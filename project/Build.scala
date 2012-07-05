@@ -25,14 +25,14 @@ import java.io.File
 
 object BuildDef extends Build {
   
-  lazy val root = Project("xs-scala-binding-parent", file("."))
+  lazy val root = Project("sxs-parent", file("."))
 		  .settings(description:= "Parent for Crossroads I/O Scala binding project", 
 		  		crossPaths := false,
-			publishArtifact := false) aggregate(core, demos)
+			publishArtifact := false) aggregate(core, demos, performance)
 
   // Core Project  
   // ------------
-  lazy val core = Project(id = "xs-scala-binding", base = file("core"))
+  lazy val core = Project(id = "sxs", base = file("core"))
     .settings(description:= "Crossroads I/O Scala binding", 
     		organization:= "io.crossroads", 
     		name:="xs-scala-binding",
@@ -60,10 +60,10 @@ object BuildDef extends Build {
 
   // Demos Project
   // ------------
-  lazy val demos = Project(id = "xs-scala-binding-demos", base = file("demos")) dependsOn(core)
+  lazy val demos = Project(id = "sxs-demos", base = file("demos")) dependsOn(core)
     .settings(description := "Examples for Scala binding", 
     		organization:= "io.crossroads", 
-    		name:="xs-scala-binding-demos",
+    		name:="sxs-demos",
     		organizationName:= "Scalaric",
     		version := "1.0.2-SNAPSHOT",
     		crossPaths := false,
@@ -74,10 +74,10 @@ object BuildDef extends Build {
 
 	// Performance Project
 	// -------------------
-	lazy val performance = Project(id = "xs-scala-binding-performance", base = file("performance")) dependsOn(core)
+	lazy val performance = Project(id = "sxs-perf", base = file("performance")) dependsOn(core)
 		.settings(description := "Performance examples for Scala binding",
 			organization := "io.crossroads",
-			name:="sx-scala-binding-performance",
+			name:="sxs-perf",
 			organizationName:= "Scalaric",
 			version:= "1.0.2-SNAPSHOT",
 			crossPaths := false,

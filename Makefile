@@ -19,9 +19,9 @@ INCLUDE = -I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux \
 	-I/System/Library/Frameworks/JavaVM.framework/Headers \
 	-I/opt/local/include
 
-C_OBJ = $(OBJDIR)/XSLibrary.o
-C_SRC = $(SRCDIR)/XSLibrary.c
-C_SO = $(SODIR)/XSLibrary.so
+C_OBJ = $(OBJDIR)/sxs.o
+C_SRC = $(SRCDIR)/sxs.c
+C_SO = $(SODIR)/sxs.so
 
 .PHONY: all
 all: $(C_SO)

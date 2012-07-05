@@ -27,7 +27,7 @@ public class local_thr {
 
         bind_to = "tcp://127.0.0.1:3000";
         message_size = 1;
-        message_count = 1000000;
+        message_count = 10000000;
         System.out.printf("args: %s | %d | %d\n",
                           bind_to, message_size, message_count);
 

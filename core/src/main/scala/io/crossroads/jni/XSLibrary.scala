@@ -22,9 +22,6 @@ package io.crossroads.jni
 import java.net.URL
 
 object XSLibrary {
-	
-	//val location: URL =  this.getClass().getResource("/XSLibrary.so")
-  	//System.loadLibrary(location.getPath)
   
   Library.load
 	
