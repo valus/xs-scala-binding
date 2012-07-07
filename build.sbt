@@ -4,7 +4,7 @@ organization          := "io.crossroads"
 
 name				  := "xs-scala-binding"
 
-version               := "1.0.2-SNAPSHOT"
+version               := "1.0.2"
 
 homepage              := Some(url("https://github.com/valus/xs-scala-binding"))
 
@@ -59,4 +59,4 @@ compile <<= (compile in Compile, resourceManaged in Compile, sourceDirectory, cl
 
 fork in run := true
 
-javaOptions in run += "-Djava.library.path=./target/so"
+javaOptions in run += "-Djava.library.path=./core/src/main/resources"
