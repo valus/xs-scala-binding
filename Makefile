@@ -1,6 +1,6 @@
 
 OBJDIR = target/obj
-SODIR = core/src/main/resources/
+SODIR = core/src/main/resources
 SRCDIR = core/src/main/c/jni
 CC = gcc -std=gnu99
 CCDEPMODE = depmode=gcc3
@@ -21,7 +21,7 @@ INCLUDE = -I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux \
 
 C_OBJ = $(OBJDIR)/sxs.o
 C_SRC = $(SRCDIR)/sxs.c
-C_SO = $(SODIR)/sxs.so
+C_SO = $(SODIR)/sxs
 
 .PHONY: all
 all: $(C_SO)

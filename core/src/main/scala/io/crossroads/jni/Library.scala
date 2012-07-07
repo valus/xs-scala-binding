@@ -9,7 +9,7 @@ object Library {
 
 	def load(): Unit = {
 		try {
-			System.loadLibrary("sxs.so")
+			System.loadLibrary("sxs")
 		} catch {
 			case e: UnsatisfiedLinkError => {
 				System.out.println("Error: " + e)
@@ -19,7 +19,7 @@ object Library {
 	}
 	
 	private def loadExt(): Unit = {
-		val fileName = "/sxs.so"
+		val fileName = "/sxs"
 		val in: InputStream = this.getClass().getResourceAsStream(fileName)
 		var fileOut: File = new File(System.getProperty("java.io.tmpdir") + fileName)
 		var out: OutputStream =  FileUtils.openOutputStream(fileOut)
