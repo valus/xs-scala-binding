@@ -17,7 +17,7 @@ For SBT projects add below code to the `project/build.sbt`, for plugin library d
 
     resolvers += "Sonatype Repository " at "https://oss.sonatype.org/content/repositories/snapshots/"
   
-    libraryDependencies += "io.crossroads" %% "xs-scala-binding" % "1.0.2-SNAPSHOT"
+    libraryDependencies += "io.crossroads" %% "xs-scala-binding" % "1.0.3-SNAPSHOT"
 
 
 ### Maven
@@ -28,7 +28,7 @@ For maven projects add below code to the `pom.xml` file:
 		<dependency>
 	   		<groupId>io.crossroads</groupId>
 			<artifactId>xs-scala-binding</artifactId>
-			<version>1.0.2-SNAPSHOT</version>
+			<version>1.0.3-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
@@ -51,7 +51,7 @@ More examples you can find in `demos` subproject.
 ##### Publisher:
 
 ```scala
-import io.crossroads.XS
+import io.crossroads.jna.XS
 
 object Publisher {
 
@@ -66,7 +66,7 @@ object Publisher {
 	  
 	  while(true) {
 	  	System.out.println("Send msg: " + msg);
-	  	pub.sendmsg(msg.getBytes, 0)
+	  	pub.send(msg.getBytes, 5, 0)
 	  }
     } 
 }
@@ -74,7 +74,7 @@ object Publisher {
 
 ##### Subscriber:
 ```scala
-import io.crossroads.XS
+import io.crossroads.jna.XS
 
 object Subscriber {
 	
@@ -92,7 +92,7 @@ object Subscriber {
 	  poller.register(sub)
 		  
 	  while(true) {
-	    System.out.println("Recv msg: " + new String(sub.recvmsg(0)))
+	    System.out.println("Recv msg: " + new String(sub.recv(5,0)))
 	  }
     }
 }
@@ -103,9 +103,9 @@ object Subscriber {
 ##### Publisher:
 
 ```java
-import io.crossroads.XS;
-import io.crossroads.XS.Context;
-import io.crossroads.XS.Socket;
+import io.crossroads.jna.XS;
+import io.crossroads.jna.XS.Context;
+import io.crossroads.jna.XS.Socket;
 
 public class Publisher {
 
@@ -121,7 +121,7 @@ public class Publisher {
 	  
 		while(true) {
 			System.out.println("Send msg: " + msg);
-			pub.sendmsg(msg.getBytes(), 0);
+			pub.send(msg.getBytes(), 5, 0);
 		}
     } 
 }
@@ -129,10 +129,10 @@ public class Publisher {
 
 ##### Subscriber:
 ```java
-import io.crossroads.XS;
-import io.crossroads.XS.Context;
-import io.crossroads.XS.Poller;
-import io.crossroads.XS.Socket;
+import io.crossroads.jna.XS;
+import io.crossroads.jna.XS.Context;
+import io.crossroads.jna.XS.Poller;
+import io.crossroads.jna.XS.Socket;
 
 public class SubscriberJava {
 	
@@ -149,7 +149,7 @@ public class SubscriberJava {
 		poller.register(sub);
 		  
 		while(true) {
-			System.out.println("Recv msg: " + new String(sub.recvmsg(0)));
+			System.out.println("Recv msg: " + new String(sub.recv(5, 0)));
 		}
     }
 }
@@ -166,6 +166,58 @@ When reporting issues, please include the following information if possible:
 * Version of libxs being used
 * Code snippet demonstrating the failure
 * Runtime environment 
+
+## Performance
+
+Tests run on machine with Intel Core i7 2.2GHz and 8GB RAM.
+How To run a test:
+
+* Run `xs-scala-binding.sh` script:
+
+```bash
+./xs-scala-binding.sh
+```
+
+* Go to the sxs-perf (performance) submodule:
+
+```sbt
+project sxs-perf
+```
+* Run a test:
+
+```sbt
+run
+```
+
+### JNA Performance
+
+<pre>
+[info] Running io.crossroads.jna.local_thr 
+args: tcp://127.0.0.1:3000 | 1 | 10000000
+XS inited
+XS PULL socket created
+XS PULL socket bound to tcp://127.0.0.1:3000
+XS running 999999 iterations...
+message size: 1 [B]
+message count: 1000000
+mean throughput: 292541 [msg/s]
+mean throughput: 2.340 [Mb/s]
+</pre>
+
+### JNI Performance
+
+<pre>
+[info] Running io.crossroads.jni.local_thr 
+args: tcp://127.0.0.1:3000 | 1 | 10000000
+XS inited
+XS PULL socket created
+XS PULL socket bound to tcp://127.0.0.1:3000
+XS running 9999999 iterations...
+message size: 1 [B]
+message count: 10000000
+mean throughput: 4459314 [msg/s]
+mean throughput: 35.675 [Mb/s]
+</pre>
 
 
 ## Contributing
